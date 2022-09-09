@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react"
-import { useNavigate } from "react-router-dom"
+import React, {createRef} from "react"
+import { Navigate } from "react-router-dom"
 
 import { 
   Container, 
@@ -15,7 +15,9 @@ import MKAlert from "components/MKAlert"
 import MKTypography from "components/MKTypography"
 
 import secureStorage from "libs/secureStorage"
+
 import Loaded from "contents/Components/Loaded"
+import ModalConfirm from "contents/Components/ConfirmAccount"
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
@@ -24,115 +26,146 @@ import network from "config/network"
 import crypto from "crypto"
 import {ethers} from "ethers"
 
-function CreateAccount() {
-  const navigate = useNavigate()
-  const [uniqueText, setUniqueText] = useState("")
-  const [secretText, setSecretText] = useState("")
+// function CreateAccount() {
+class CreateAccount extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      uniqueText : '',
+      secretText : '',
+      privateKey : '',
+      rememberMe : false,
+      isAlert : false,
+      isLoading : false,
+      disabledButton : false,
+      isLoggIn : false
+    }
 
-  const [rememberMe, setRememberMe] = useState(false)
-  const [isAlert, setIsAlert] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [disabledButton, setDisabledButton] = useState(true)
-  
-  useEffect(()=>{
-    const account = secureStorage.getItem('account')
-    if (account)
-      navigate('/')
-  }, [])
+    this.modalRef = createRef()
+  }
 
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  componentDidMount () {
+    const privateKey = secureStorage.getItem('privateKey')
+    console.log({privateKey})
+    if (privateKey)
+      this.setState({isLoggIn:true})
+  }
+
+  handleSetRememberMe = () => this.setState({rememberMe: !this.state.rememberMe});
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id] : e.target.value,
+      disabledButton : false
+    })
+  }
   
-  const createAccount = async () => {
-    setIsAlert(false)
-    setIsLoading(true)
-    if (uniqueText==="" || secretText==="") {
-      setIsAlert(true)
-      setIsLoading(false)
+  createAccount = async () => {
+    console.log(this.state)
+    this.setState({
+      isAlert : false,
+      isLoading : true
+    })
+    if (this.state.uniqueText==="" || this.state.secretText==="") {
+      this.setState({
+        isAlert : true,
+        isLoading : false
+      })
     } else {
-      // const RPC_URL = "https://api.harmony.one"
-      const privateKey = crypto.createHmac("sha256", uniqueText).update(secretText).digest("hex")
-      const provider = new ethers.providers.JsonRpcProvider(network[0].RPC_URL)
-      const wallet = new ethers.Wallet(privateKey, provider);
-      let balance = await provider.getBalance(wallet.address)
-      balance = ethers.utils.formatEther(balance)
-
-      const network = await provider.getNetwork()
-      console.log(network)
-      console.log({address: wallet.address, balance})
-      setIsLoading(false)
+      const privateKey = crypto.createHmac("sha256", this.state.uniqueText).update(this.state.secretText).digest("hex")
+      const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
+      
+      // const wallet = new ethers.Wallet(privateKey, provider);
+      // let balance = await provider.getBalance(wallet.address)
+      // balance = ethers.utils.formatEther(balance)
+      
+      // secureStorage.setItem('privateKey', privateKey)
+      this.setState({
+        isLoading : false,
+        isAlert : false,
+        privateKey
+      })
+      this.modalRef.current.setShow(true, privateKey)
     }
   }
 
-  return (
-    <Layout image={bgImage}>
-      <Loaded open={isLoading}/>
-      <Card>
-        <MKBox
-          display="flex"
-          variant="gradient"
-          borderRadius="lg"
-          mx={2}
-          p={2}
-          mb={1}
-          textAlign="center"
-          justifyContent="center">
-          <MKTypography variant="h4" fontWeight="medium" mt={1}>
-            Create Account
-          </MKTypography>
-        </MKBox>
-        <MKBox pt={4} pb={3} px={3}>
-          {isAlert&&
-            <MKAlert color="warning">
-              Please Remember 2 data to recover your account
-            </MKAlert>
-          }
-          <MKBox component="form" role="form">
-            <MKBox mb={2}>
-              <MKInput label="Unique Text" fullWidth id='uniqueText' onChange={(e)=> {
-                setUniqueText(e.target.value)
-                setDisabledButton(false)
-              }}/>
-            </MKBox>
-            <MKBox mb={2}>
-              <MKInput type="password" label="Secret Text" fullWidth id='secretText' onChange={(e)=> {
-                setSecretText(e.target.value)
-                setDisabledButton(false)
-              }}/>
-            </MKBox>
-            <MKBox display="flex" alignItems="center" ml={-1}>
-              <Switch checked={rememberMe} onChange={handleSetRememberMe}/>
-              <MKTypography
-                variant="button"
-                fontWeight="regular"
-                color="text"
-                onClick={handleSetRememberMe}
-                sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}>
-                &nbsp;&nbsp; Remember me
-              </MKTypography>
-            </MKBox>
-            <MKBox mt={4} mb={1}>
-              <MKButton variant="gradient" color="info"
-                disabled={disabledButton} 
-                onClick={createAccount}
-                fullWidth>
-                Create Account
-              </MKButton>
-            </MKBox>
-            <MKBox mt={3} mb={1} textAlign="center">
-              <MKTypography
-                sx={{cursor:'pointer'}}
-                variant="button"
-                color="info"
-                fontWeight="medium"
-                textGradient>
-                  Restore Account
-              </MKTypography>
+  onSignIn = ()=>{
+    secureStorage.setItem('privateKey', privateKey)
+    this.setState({isLoggIn:true})
+    console.log('[NEXT SIGNIN]')
+  }
+
+  render () {
+    if (this.state.isLoggIn) {
+      return <Navigate to='/' />
+    }
+      
+    return (
+      <Layout image={bgImage}>
+        <ModalConfirm ref={this.modalRef} onSignIn={this.onSignIn}/>
+        <Loaded open={this.state.isLoading}/>
+        <Card>
+          <MKBox
+            display="flex"
+            variant="gradient"
+            borderRadius="lg"
+            mx={2}
+            p={2}
+            mb={1}
+            textAlign="center"
+            justifyContent="center">
+            <MKTypography variant="h4" fontWeight="medium" mt={1}>
+              Create Account
+            </MKTypography>
+          </MKBox>
+          <MKBox pt={4} pb={3} px={3}>
+            {this.state.isAlert&&
+              <MKAlert color="warning">
+                Please Remember 2 data to recover your account
+              </MKAlert>
+            }
+            <MKBox component="form" role="form">
+              <MKBox mb={2}>
+                <MKInput label="Unique Text" fullWidth id='uniqueText' onChange={this.handleChange}/>
+              </MKBox>
+              <MKBox mb={2}>
+                <MKInput type="password" label="Secret Text" fullWidth id='secretText' onChange={this.handleChange}/>
+              </MKBox>
+              <MKBox display="flex" alignItems="center" ml={-1}>
+                <Switch checked={this.state.rememberMe} onChange={this.handleSetRememberMe}/>
+                <MKTypography
+                  variant="button"
+                  fontWeight="regular"
+                  color="text"
+                  onClick={this.handleSetRememberMe}
+                  sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}>
+                  &nbsp;&nbsp; Remember me
+                </MKTypography>
+              </MKBox>
+              <MKBox mt={4} mb={1}>
+                <MKButton variant="gradient" color="info"
+                  disabled={this.state.disabledButton} 
+                  onClick={this.createAccount}
+                  fullWidth>
+                  Create Account
+                </MKButton>
+              </MKBox>
+              <MKBox mt={3} mb={1} textAlign="center">
+                <MKTypography
+                  sx={{cursor:'pointer'}}
+                  variant="button"
+                  color="info"
+                  fontWeight="medium"
+                  textGradient>
+                    Restore Account
+                </MKTypography>
+              </MKBox>
             </MKBox>
           </MKBox>
-        </MKBox>
-      </Card>
-    </Layout>
-  )
+        </Card>
+      </Layout>
+    )
+  }
 }
 
 export default CreateAccount

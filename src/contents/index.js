@@ -7,8 +7,8 @@ function Layout () {
   const navigate = useNavigate()
 
   useEffect(()=>{
-    const account = secureStorage.getItem('account')
-    if (!account)
+    const privateKey = secureStorage.getItem('privateKey')
+    if (!privateKey)
       navigate('/account/create')
   })
 
