@@ -40,11 +40,11 @@ const routes = [
       //   route: '/account/create',
       //   index:true,
       // },{
-        name : 'restore account',
-        description : 'Restore account',
-        key : 'restore-account',
-        route : '/account/restore'
-      },{
+      //   name : 'restore account',
+      //   description : 'Restore account',
+      //   key : 'restore-account',
+      //   route : '/account/restore'
+      // },{
         name : 'info account',
         description : 'Info account',
         key : 'info-account',

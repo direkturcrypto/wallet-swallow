@@ -38,7 +38,8 @@ class CreateAccount extends React.Component {
       isAlert : false,
       isLoading : false,
       disabledButton : false,
-      isLoggIn : false
+      isLoggIn : false,
+      redirect : ''
     }
 
     this.modalRef = createRef()
@@ -56,7 +57,8 @@ class CreateAccount extends React.Component {
   handleChange = (e) => {
     this.setState({
       [e.target.id] : e.target.value,
-      disabledButton : false
+      disabledButton : false,
+      isAlert:false
     })
   }
   
@@ -74,18 +76,21 @@ class CreateAccount extends React.Component {
     } else {
       const privateKey = crypto.createHmac("sha256", this.state.uniqueText).update(this.state.secretText).digest("hex")
       const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
-      
-      // const wallet = new ethers.Wallet(privateKey, provider);
-      // let balance = await provider.getBalance(wallet.address)
-      // balance = ethers.utils.formatEther(balance)
-      
-      // secureStorage.setItem('privateKey', privateKey)
-      this.setState({
-        isLoading : false,
-        isAlert : false,
-        privateKey
-      })
-      this.modalRef.current.setShow(true, privateKey)
+      if (provider) {
+        // const wallet = new ethers.Wallet(privateKey, provider);
+        // let balance = await provider.getBalance(wallet.address)
+        // balance = ethers.utils.formatEther(balance)
+        
+        this.setState({
+          isLoading : false,
+          isAlert : false,
+          privateKey
+        })
+        this.modalRef.current.setShow(true, privateKey)
+      }
+      else {
+        alert('Cannot create account')
+      }
     }
   }
 
@@ -97,7 +102,11 @@ class CreateAccount extends React.Component {
 
   render () {
     if (this.state.isLoggIn) {
-      return <Navigate to='/' />
+      return <Navigate to="/" />
+    }
+
+    if (this.state.redirect) {
+      return <Navigate to={this.state.redirect} />
     }
       
     return (
@@ -121,7 +130,7 @@ class CreateAccount extends React.Component {
           <MKBox pt={4} pb={3} px={3}>
             {this.state.isAlert&&
               <MKAlert color="warning">
-                Please Remember 2 data to recover your account
+                Please complete the form data 
               </MKAlert>
             }
             <MKBox component="form" role="form">
@@ -150,12 +159,21 @@ class CreateAccount extends React.Component {
                   Create Account
                 </MKButton>
               </MKBox>
-              <MKBox mt={3} mb={1} textAlign="center">
+              <MKBox mt={1} >
+                <MKTypography
+                  variant="button"
+                  color="text"
+                  textGradient>
+                  Please Remember 2 data to recover your account
+                </MKTypography>
+              </MKBox>
+              <MKBox mt={1} mb={1} textAlign="center">
                 <MKTypography
                   sx={{cursor:'pointer'}}
                   variant="button"
                   color="info"
                   fontWeight="medium"
+                  onClick={()=> this.setState({redirect:'/account/restore'})}
                   textGradient>
                     Restore Account
                 </MKTypography>

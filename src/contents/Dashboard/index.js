@@ -59,18 +59,11 @@ class Dashboard extends React.Component {
   
   render () {
     return (
-      <MKBox 
-        position="relative" 
-        width="100%"
-        height="500px">
-        <Container>
-          <MKBox display="flex" justifyContent="center" alginitems="center" height="100%">
-            <MKButton variant="outlined" color="info" size="large">
-              CONNECT
-            </MKButton>
-          </MKBox>
-        </Container>
-      </MKBox>
+      <Container>
+        <Grid container justifyContent="center">
+          
+        </Grid>
+      </Container>
     )
   }
 }

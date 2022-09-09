@@ -82,23 +82,21 @@ export default class ConfirmAccount extends React.Component {
                     value={this.state.privateKey}/>
                 </Grid>
                 <Grid item xs={2} md={2}>
-                  {/* <MKBox width = "100%" > */}
-                    <CopyToClipboard text={this.state.privateKey}>
-                      <MKButton
-                        fullWidth
-                        variant="outlined"
-                        color="dark"
-                        onClick={()=> {
-                          this.setState({success:true})
-                          setTimeout(() => {
-                            this.setState({success:false})
-                          }, 1000);
-                        }}
-                        size="small">
-                        <MKBox color="inherit" mr={0.5} className="fas fa-copy" /> Copy
-                      </MKButton>
-                    </CopyToClipboard>
-                  {/* </MKBox> */}
+                  <CopyToClipboard text={this.state.privateKey}>
+                    <MKButton
+                      fullWidth
+                      variant="outlined"
+                      color="dark"
+                      onClick={()=> {
+                        this.setState({success:true})
+                        setTimeout(() => {
+                          this.setState({success:false})
+                        }, 1000);
+                      }}
+                      size="small">
+                      <MKBox color="inherit" mr={0.5} className="fas fa-copy" /> Copy
+                    </MKButton>
+                  </CopyToClipboard>
                 </Grid>
               </Grid>
             </MKBox>
