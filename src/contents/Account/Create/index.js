@@ -47,7 +47,6 @@ class CreateAccount extends React.Component {
 
   componentDidMount () {
     const privateKey = secureStorage.getItem('privateKey')
-    console.log({privateKey})
     if (privateKey)
       this.setState({isLoggIn:true})
   }
@@ -63,7 +62,6 @@ class CreateAccount extends React.Component {
   }
   
   createAccount = async () => {
-    console.log(this.state)
     this.setState({
       isAlert : false,
       isLoading : true
@@ -95,9 +93,8 @@ class CreateAccount extends React.Component {
   }
 
   onSignIn = ()=>{
-    secureStorage.setItem('privateKey', privateKey)
+    secureStorage.setItem('privateKey', this.state.privateKey)
     this.setState({isLoggIn:true})
-    console.log('[NEXT SIGNIN]')
   }
 
   render () {

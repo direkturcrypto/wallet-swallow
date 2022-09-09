@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
+import MKBox from "components/MKBox";
+
+// Material Kit 2 PRO React examples
+import DefaultNavbar from "examples/Navbars/DefaultNavbar";
+import DefaultFooter from "examples/Footers/DefaultFooter";
+
+import routes from "routes";
 import secureStorage from "libs/secureStorage"
 
 function Layout () {
@@ -14,6 +21,14 @@ function Layout () {
 
   return (
     <>
+      <MKBox bgColor="dark" shadow="sm" py={0.25}>
+        <DefaultNavbar
+          brand = {"Sample App"}
+          routes={routes}
+          transparent
+          relative
+          light/>
+      </MKBox>
       <Outlet />
     </>
   )

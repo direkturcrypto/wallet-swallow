@@ -7,9 +7,6 @@ import Stack from "@mui/material/Stack";
 import MKBox from "components/MKBox"
 import MKButton from "components/MKButton"
 
-import WalletConnect from "@walletconnect/client";
-import QRCodeModal from "@walletconnect/qrcode-modal";
-
 class Dashboard extends React.Component {
 
   constructor(props) {
@@ -61,7 +58,7 @@ class Dashboard extends React.Component {
     return (
       <Container>
         <Grid container justifyContent="center">
-          
+
         </Grid>
       </Container>
     )

@@ -420,7 +420,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
       popperRef={null}
       open={Boolean(nestedDropdown)}
       placement="right-start"
-      transition
+      // transition
       style={{ zIndex: 10 }}
       onMouseEnter={() => {
         setNestedDropdown(nestedDropdownEl);

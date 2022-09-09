@@ -31,27 +31,8 @@ const routes = [
   },{
     name: 'account',
     key:'account',
-    route:'/account',
-    collapse : [
-      {
-      //   name : 'create account',
-      //   description : 'Create new account',
-      //   key : 'create-account',
-      //   route: '/account/create',
-      //   index:true,
-      // },{
-      //   name : 'restore account',
-      //   description : 'Restore account',
-      //   key : 'restore-account',
-      //   route : '/account/restore'
-      // },{
-        name : 'info account',
-        description : 'Info account',
-        key : 'info-account',
-        route : '/account/info',
-        index:true,
-      }
-    ]
+    route:'/account/info',
+    icon: <Icon>person</Icon>
   }
 ];
 
