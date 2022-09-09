@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 
 // react-router components
 import { Routes, Route, useLocation } from "react-router-dom"
@@ -13,17 +13,35 @@ import theme from "assets/theme"
 // Material Kit 2 React routes
 import routes from "routes"
 import Layout from "contents"
+import CreateAccount from "contents/Account/Create"
+import RestoreAccount from "contents/Account/Restore"
 
-export default function App() {
-  const { pathname } = useLocation();
+import secureStorage from "libs/secureStorage"
 
-  // Setting page scroll to 0 when changing the route
-  useEffect(() => {
-    document.documentElement.scrollTop = 0;
-    document.scrollingElement.scrollTop = 0;
-  }, [pathname]);
+class App extends React.Component {
+  
+  constructor(props){
+    super(props);
+    this.state = {
+      waitingWorker: {},
+    };
+  }
 
-  const getRoutes = (allRoutes) =>{
+  componentDidMount () {
+  }
+
+  sessionCheck() {
+    const account = secureStorage.getItem('account')
+    if (!account)
+      this.logout()
+  }
+
+  logout () {
+    secureStorage.removeItem('account')
+    window.location.reload();
+  }
+
+  getRoutes = (allRoutes) => {
     const index = []
     const routes = allRoutes.map((route) => {
       if(route.index)
@@ -31,7 +49,7 @@ export default function App() {
       if (route.collapse) {
         return ( 
           <Route exact path={route.route} element={route.component} key={route.key} >
-            {getRoutes(route.collapse)}
+            {this.getRoutes(route.collapse)}
           </Route> 
         )
       }
@@ -41,17 +59,24 @@ export default function App() {
       return null;
     })
     return routes.concat(index)
-  };
+  }
 
-  const  routeTemp = getRoutes(routes)
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Routes>
-        <Route path="/" element={<Layout key='layout' />}>
-          {routeTemp}
-        </Route>
-      </Routes>
-    </ThemeProvider>
-  );
+  render () {
+    const  routeTemp = this.getRoutes(routes)
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes>
+          <Route exact path="/account/create" element={<CreateAccount />} key='create-account' />
+          <Route path="/account/restore" element={<RestoreAccount />} key='restore-account' />
+          <Route path="/" element={<Layout key='layout' />}>
+            {routeTemp}
+          </Route>
+        </Routes>
+      </ThemeProvider>
+    );
+  }
 }
+
+
+export default App

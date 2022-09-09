@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
-export default function Layout() {
+import secureStorage from "libs/secureStorage"
+
+function Layout () {
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    const account = secureStorage.getItem('account')
+    if (!account)
+      navigate('/account/create')
+  })
 
   return (
     <>
@@ -9,3 +18,4 @@ export default function Layout() {
     </>
   )
 }
+export default Layout

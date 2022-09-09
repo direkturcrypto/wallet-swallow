@@ -54,7 +54,6 @@ class Dashboard extends React.Component {
       if (err) console.log('ERR', err)
       console.log(`connector.on("connect")`);
 
-      console.log({payload})
     })
   }
   
@@ -66,7 +65,7 @@ class Dashboard extends React.Component {
         height="500px">
         <Container>
           <MKBox display="flex" justifyContent="center" alginitems="center" height="100%">
-            <MKButton variant="outlined" color="info" size="large" onClick={this.connect}>
+            <MKButton variant="outlined" color="info" size="large">
               CONNECT
             </MKButton>
           </MKBox>
