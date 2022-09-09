@@ -18,9 +18,7 @@ import secureStorage from "libs/secureStorage"
 
 import Loaded from "contents/Components/Loaded"
 import ModalConfirm from "contents/Components/ConfirmAccount"
-
-// Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import Background from "contents/Components/Background"
 
 import network from "config/network"
 import crypto from "crypto"
@@ -34,6 +32,7 @@ class CreateAccount extends React.Component {
       uniqueText : '',
       secretText : '',
       privateKey : '',
+      errMessage : 'Please complete the form data',
       rememberMe : false,
       isAlert : false,
       isLoading : false,
@@ -69,25 +68,28 @@ class CreateAccount extends React.Component {
     if (this.state.uniqueText==="" || this.state.secretText==="") {
       this.setState({
         isAlert : true,
-        isLoading : false
+        isLoading : false,
+        errMessage : 'Please complete the form data '
       })
     } else {
-      const privateKey = crypto.createHmac("sha256", this.state.uniqueText).update(this.state.secretText).digest("hex")
-      const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
-      if (provider) {
-        // const wallet = new ethers.Wallet(privateKey, provider);
+      try {
+        const privateKey = crypto.createHmac("sha256", this.state.uniqueText).update(this.state.secretText).digest("hex")
+        const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
+        const wallet = new ethers.Wallet(privateKey, provider)
         // let balance = await provider.getBalance(wallet.address)
         // balance = ethers.utils.formatEther(balance)
-        
         this.setState({
           isLoading : false,
           isAlert : false,
           privateKey
         })
         this.modalRef.current.setShow(true, privateKey)
-      }
-      else {
-        alert('Cannot create account')
+      } catch (err) {
+        this.setState({
+          isAlert:true,
+          isLoading:false,
+          errMessage:'The private key you entered is wrong'
+        })
       }
     }
   }
@@ -107,7 +109,7 @@ class CreateAccount extends React.Component {
     }
       
     return (
-      <Layout image={bgImage}>
+      <Background>
         <ModalConfirm ref={this.modalRef} onSignIn={this.onSignIn}/>
         <Loaded open={this.state.isLoading}/>
         <Card>
@@ -127,7 +129,7 @@ class CreateAccount extends React.Component {
           <MKBox pt={4} pb={3} px={3}>
             {this.state.isAlert&&
               <MKAlert color="warning">
-                Please complete the form data 
+                {this.state.errMessage}
               </MKAlert>
             }
             <MKBox component="form" role="form">
@@ -178,31 +180,9 @@ class CreateAccount extends React.Component {
             </MKBox>
           </MKBox>
         </Card>
-      </Layout>
+      </Background>
     )
   }
 }
 
 export default CreateAccount
-
-function Layout ({image, children}) {
-  return (
-    <>
-      <MKBox
-        position="absolute"
-        top={0}
-        left={0}
-        zIndex={1}
-        width="100%"
-        minHeight="100vh">
-        <MKBox px={1} width="100%" height="100vh" mx="auto" position="relative" zIndex={2}>
-          <Grid container spacing={1} justifyContent="center" alignItems="center" height="100%">
-            <Grid item xs={11} sm={9} md={6} lg={6} xl={6}>
-              {children}
-            </Grid>
-          </Grid>
-        </MKBox>
-      </MKBox>
-    </>
-  )
-}

@@ -81,8 +81,8 @@ export default class ConfirmAccount extends React.Component {
                 </MKBox>
               </Slide>
               
-              <MKBox display="flex" alginitems="center" justifyContent="space-between" p={2}>
-                <MKTypography variant="h5">Harap simpan private key </MKTypography>
+              <MKBox display="flex" alginitems="center" justifyContent="flex-end" p={2}>
+                {/* <MKTypography variant="h5">Perhatian</MKTypography> */}
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={this.toggleModal} />
               </MKBox>
               <Divider sx={{ my: 1 }} />
