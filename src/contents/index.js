@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
+import Grid from "@mui/material/Grid";
+
 import MKBox from "components/MKBox";
 
 // Material Kit 2 PRO React examples

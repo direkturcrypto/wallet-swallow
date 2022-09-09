@@ -17,12 +17,12 @@ import Dashboard from "contents/Dashboard";
 
 const routes = [
   {
-    name: "dashboard",
-    icon: <Icon>dashboard</Icon>,
+    name: "wallet",
+    icon: <Icon>wallet</Icon>,
     route:"/dashboard",
     index:true,
     component : <Dashboard/>,
-    key:'dashboard',
+    key:'wallet',
   },{
     name:'transaction',
     icon: <Icon>shopping-cart</Icon>,

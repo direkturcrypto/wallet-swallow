@@ -78,6 +78,7 @@ class CreateAccount extends React.Component {
         const wallet = new ethers.Wallet(privateKey, provider)
         // let balance = await provider.getBalance(wallet.address)
         // balance = ethers.utils.formatEther(balance)
+        console.log({wallet, privateKey})
         this.setState({
           isLoading : false,
           isAlert : false,
