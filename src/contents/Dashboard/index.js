@@ -18,6 +18,7 @@ import { FixedSizeList } from 'react-window';
 import MKBox from "components/MKBox"
 import MKButton from "components/MKButton"
 
+import View from "contents/Components/ViewScroll"
 import secureStorage from "libs/secureStorage";
 
 import Tokens from "config/token"
@@ -73,10 +74,16 @@ class Dashboard extends React.Component {
     this.setState({wallet, balance})
   }
 
-  renderList = (props) => {
-    
+  renderList = ()=>{
+    return this.state.tokens.map((item, index)=> (
+      <ListItem key={index} component="div" disablePadding>
+        <ListItemButton>
+          <ListItemText primary={item.contract_name} />
+        </ListItemButton>
+      </ListItem>
+    ))
   }
-  
+
   render () {
     return (
       <MKBox
@@ -100,16 +107,9 @@ class Dashboard extends React.Component {
                   </MKBox>
                 </MKBox>
                 <Divider/>
-                <MKBox sx={{width:'100%', height:400, maxWidth:360}}>
-                  <FixedSizeList
-                    height={400}
-                    width="100%"
-                    itemSize={46}
-                    itemCount={this.state.tokens.length}
-                    overscanCount={5}>
-                    {renderRow}
-                  </FixedSizeList>
-                </MKBox>
+                <View height="450px" bgColor="none">
+                  {this.renderList()}
+                </View>
               </Card>
             </Grid>
             <Grid item xs={12} md={8} lg={8}>
@@ -131,9 +131,16 @@ export default Dashboard
 function renderRow(props) {
   const { index, style } = props;
 
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  }
+
   return (
     <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton>
+      <ListItemButton 
+        onClick={handleListItemClick} 
+        selected={selectedIndex===index}>
         <ListItemText primary={`Item ${index + 1}`} />
       </ListItemButton>
     </ListItem>

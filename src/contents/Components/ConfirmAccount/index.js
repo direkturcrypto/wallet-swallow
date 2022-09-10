@@ -21,6 +21,8 @@ import MKAlert from 'components/MKAlert';
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from 'qrcode.react';
 
+import View from "contents/Components/ViewScroll"
+
 export default class ConfirmAccount extends React.Component {
   
   constructor(props) {
@@ -64,8 +66,6 @@ export default class ConfirmAccount extends React.Component {
             bgColor="white"
             shadow="xl"
             style={{outline:'none'}}>
-            
-
             <View>
               <Slide direction="down" in={this.state.success} unmountOnExit>
                 <MKBox position="absolute" top="0.5rem" left={0} width="100%">
@@ -82,7 +82,7 @@ export default class ConfirmAccount extends React.Component {
               </Slide>
               
               <MKBox display="flex" alginitems="center" justifyContent="flex-end" p={2}>
-                {/* <MKTypography variant="h5">Perhatian</MKTypography> */}
+                <MKTypography variant="h5">Attention !</MKTypography>
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={this.toggleModal} />
               </MKBox>
               <Divider sx={{ my: 1 }} />
@@ -151,23 +151,3 @@ export default class ConfirmAccount extends React.Component {
     )
   }
 }
-
-function View({children, height, maxHeight, ...rest}) {
-  return (
-		<MKBox
-			bgColor="grey-100"
-			width="100%"
-			height={height}
-			maxHeight={maxHeight}
-			borderRadius="xl"
-			{...rest}
-			sx={{ overflowX: "scroll", overflowY: "scroll" }}>
-			{children}
-		</MKBox>
-	)
-}
-
-View.defaultProps = {
-	height: "auto",
-	maxHeight:"50rem"
-};
