@@ -24,7 +24,7 @@ function Layout () {
   const handleLogout = (e) => {
     secureStorage.removeItem('privateKey')
     navigate('/account/create')
-    navigate(0)
+    // navigate(0)
   }
 
   return (
