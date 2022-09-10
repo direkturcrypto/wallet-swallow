@@ -31,23 +31,37 @@ function CardBalance({color, variant, wallet, ...rest}) {
   }
 
   return (
-    <MKBox display="flex" variant={variant}
-      bgColor={variant === "contained" ? "grey-100" : color}
+    <MKBox display="flex"
+      bgColor="white"
+      coloredShadow="secondary"
       justifyContent="center"
-      borderRadius="xl"
-      shadow="md"
+      borderRadius="5px"
+      shadow="xl"
       flexDirection="column">
-      <MKBox width="100%" display="flex" 
+      <MKBox width="100%" 
+        display="flex" 
+        flexDirection="column"
         alignItems="center" 
         justifyContent="center"
         bgColor="grey-100"
-        p={5}>
+        mb={2}
+        pb={1.5}
+        pt={5}
+        px={5}>
         <QRCode
           value={privateKey}
           size={280}
           level={"L"}/>
+        <MKBox mt={1}>
+          <MKTypography variant="body2" fontSize="small" 
+            textTransform="uppercase" 
+            textGradient
+            fontWeight="bold">
+            {address}
+          </MKTypography>
+        </MKBox>
       </MKBox>
-      <MKBox display="flex" 
+      {/* <MKBox display="flex" 
         flexDirection="column" 
         alignItems="center" 
         justifyContent="center"
@@ -66,7 +80,7 @@ function CardBalance({color, variant, wallet, ...rest}) {
           fontWeight="bold">
           {address}
         </MKTypography>
-      </MKBox>
+      </MKBox> */}
 
       <MKBox width="100%" display="flex" 
         flexDirection={{xs:'column', md:'row'}}
