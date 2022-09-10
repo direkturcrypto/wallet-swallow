@@ -21,11 +21,24 @@ function Layout () {
       navigate('/account/create')
   })
 
+  const handleLogout = (e) => {
+    secureStorage.removeItem('privateKey')
+    navigate('/account/create')
+    navigate(0)
+  }
+
   return (
     <>
       <MKBox bgColor="dark" shadow="sm" py={0.25}>
         <DefaultNavbar
           brand = {"Sample App"}
+          action={{
+            type: "internal",
+            onClick:handleLogout,
+            route: "/",
+            label: "logout",
+            color: "error",
+          }}
           routes={routes}
           transparent
           relative
