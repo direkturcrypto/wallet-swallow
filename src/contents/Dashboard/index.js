@@ -18,6 +18,7 @@ import { FixedSizeList } from 'react-window';
 import MKBox from "components/MKBox"
 import MKButton from "components/MKButton"
 
+import CardBalance from "contents/Components/CardBalance";
 import View from "contents/Components/ViewScroll"
 import secureStorage from "libs/secureStorage";
 
@@ -36,15 +37,14 @@ class Dashboard extends React.Component {
 
     this.state = {
       wallet:null,
-      connector:null,
-      connected: false,
-      chainId:1,
-      showModal:false,
-      pendingRequest:false,
-      uri: "",
-      accounts: [],
+      // connector:null,
+      // connected: false,
+      chainId:1666600000,
+      // showModal:false,
+      // uri: "",
+      // accounts: [],
       address: "",
-      result: null,
+      // result: null,
       balance : 0,
       tokens: [],
       assets: []
@@ -52,26 +52,32 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount () {
-    this.getTokens()
+    this.getWallet()
+    this.getBalance()
+  }
+  
+  getWallet = async () => {
+    try {
+      const privateKey = secureStorage.getItem('privateKey')
+      const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
+      const wallet = new ethers.Wallet(privateKey, provider)
+      let balance = await provider.getBalance(wallet.address)
+      balance = ethers.utils.formatEther(balance)
+      console.log({wallet,address:wallet.address, balance})
+  
+      this.setState({wallet, address:wallet.address})
+    } catch (err) {
+      console.log(err)
+    }
   }
 
-  getTokens = () => {
+  getBalance = () => {
     const tokens = Tokens.items
     let balance = tokens.reduce((prev, curr)=> {
       return prev+curr.quote
     }, 0)
 
-    this.setState({tokens})
-  }
-  
-  getWallet = async () => {
-    const privateKey = secureStorage.getItem('privateKey')
-    const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
-    const wallet = new ethers.Wallet(privateKey, provider)
-    let balance = await provider.getBalance(wallet.address)
-    balance = ethers.utils.formatEther(balance)
-    console.log({wallet,address:wallet.address, balance})
-    this.setState({wallet, balance})
+    this.setState({tokens,balance})
   }
 
   renderList = ()=>{
@@ -94,7 +100,9 @@ class Dashboard extends React.Component {
         <MKBox py={2}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={4} lg={4}>
-              <Card>
+              <CardBalance
+                wallet={{address:this.state.address, balance:this.state.balance}}/>
+              {/* <Card>
                 <MKBox width="100%" display="flex" flexDirection="row" 
                   justifyContent="space-between" 
                   alignItems="center" 
@@ -110,7 +118,7 @@ class Dashboard extends React.Component {
                 <View height="450px" bgColor="none">
                   {this.renderList()}
                 </View>
-              </Card>
+              </Card> */}
             </Grid>
             <Grid item xs={12} md={8} lg={8}>
               <Card>
