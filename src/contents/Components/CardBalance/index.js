@@ -54,7 +54,8 @@ function CardBalance({color, variant, wallet, ...rest}) {
         bgColor="grey-100"
         borderRadius="xl"
         py={2}
-        m={2}>
+        my={1}
+        mx={2}>
         
         <MKTypography variant="body2">
           Receiver
@@ -68,9 +69,27 @@ function CardBalance({color, variant, wallet, ...rest}) {
       </MKBox>
 
       <MKBox width="100%" display="flex" 
+        flexDirection={{xs:'column', md:'row'}}
         alignItems="center" 
+        mb={2}
         justifyContent="center">
-        
+        <MKBox mr={0.5}>
+          <MKButton type="button" variant="outlined" color="info" size="small">
+            <Icon>send</Icon> &nbsp;Send
+          </MKButton>
+        </MKBox>
+        <MKBox mr={0.5}>
+          <MKButton type="button" variant="outlined" color="info" size="small">
+            <Icon>swap_horizontal_circle</Icon>&nbsp; Swap
+          </MKButton>
+        </MKBox>
+        <MKBox mr={0.5}>
+          <CopyToClipboard text={address}>
+            <MKButton type="button" variant="outlined" color="info" size="small">
+              <Icon>copy</Icon>&nbsp; Copy
+            </MKButton>
+          </CopyToClipboard>
+        </MKBox>
       </MKBox>
     </MKBox>
   )
