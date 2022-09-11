@@ -11,7 +11,7 @@ import Icon from "@mui/material/Icon";
 import MKBox from "components/MKBox"
 import MKButton from "components/MKButton"
 
-
+import Loaded from "contents/Components/Loaded"
 import CardBalance from "contents/Components/CardBalance";
 import TableAssets from "contents/Components/TableAssets";
 
@@ -20,7 +20,6 @@ import network from "config/network"
 import secureStorage from "libs/secureStorage";
 
 import _ from "lodash"
-import crypto from "crypto"
 import axios from "axios"
 import {ethers} from "ethers"
 
@@ -30,6 +29,7 @@ class Dashboard extends React.Component {
     super(props)
 
     this.state = {
+      isLoading:false,
       wallet:null,
       chainId:1666600000,
       address: "",
@@ -53,9 +53,14 @@ class Dashboard extends React.Component {
       balance = ethers.utils.formatEther(balance)
       console.log({wallet,address:wallet.address, balance})
   
-      this.setState({wallet, address:wallet.address})
+      this.setState({
+        wallet, 
+        address:wallet.address,
+        isLoading:false
+      })
     } catch (err) {
       console.log(err)
+      this.setState({isLoading:false})
     }
   }
 
@@ -75,6 +80,7 @@ class Dashboard extends React.Component {
           p: 2,
           position: "relative"
         }}>
+        <Loaded open={this.state.isLoading}/>
         <MKBox py={2}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={5} lg={5}>
