@@ -52,12 +52,14 @@ function TableAssets(props) {
 
   const renderRows = tableData.map((key,idx)=>{
     const rowKey = `row-${idx}`
+    const balance = parseInt(key.balance)/ (10 ** key.contract_decimals)
+
     return (
       <StyledTableRow hover tabIndex={-1} key={rowKey}>
         <MKBox component="td"
           sx={{ 
             fontSize:'14px',
-            padding:'20px !important',
+            padding:'10px !important',
             fontWeight:'bold'
           }}>
           <MKBox display="flex" alignItems="center" py={0.5} px={1}>
@@ -70,7 +72,7 @@ function TableAssets(props) {
         <MKBox component="td"
           sx={{
             fontSize:'20px',
-            padding:'20px !important'
+            padding:'10px !important'
           }}>
           <MKBox display="flex" flexDirection="column" justifyContent="center" 
             alignItems="flex-end"
@@ -78,7 +80,7 @@ function TableAssets(props) {
             <MKTypography variant="h6" fontWeight="bold"
               verticalAlign="middle" 
               sx={{width:'max-content'}}>
-              {key.quote_rate!==null?key.quote_rate:0} {key.contract_ticker_symbol}
+              {fnumber(balance,'en-US')} {key.contract_ticker_symbol}
             </MKTypography>
             <MKTypography variant="button"
               color="text"
