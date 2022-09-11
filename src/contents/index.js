@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
 import Grid from "@mui/material/Grid";
@@ -12,8 +12,11 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 import routes from "routes";
 import secureStorage from "libs/secureStorage"
 
+import ModalConfirmation from "contents/Components/Confirmation"
+
 function Layout () {
   const navigate = useNavigate()
+  const confirmRef = useRef()
 
   useEffect(()=>{
     const privateKey = secureStorage.getItem('privateKey')
@@ -21,11 +24,28 @@ function Layout () {
       navigate('/account/create')
   })
 
+  const handleLogout = (e) => {
+    confirmRef.current.setShow(true)
+  }
+  
   return (
     <>
+      <ModalConfirmation ref={confirmRef} title="Warning" 
+        message="are you sure you want to get out ?"
+        onConfirm={()=>{
+          secureStorage.removeItem('privateKey')
+          navigate('/account/create')
+        }}/>
       <MKBox bgColor="dark" shadow="sm" py={0.25}>
         <DefaultNavbar
           brand = {"Sample App"}
+          action={{
+            type: "internal",
+            onClick:handleLogout,
+            route: "/",
+            label: "logout",
+            color: "error",
+          }}
           routes={routes}
           transparent
           relative

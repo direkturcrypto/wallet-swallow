@@ -1,10 +1,10 @@
 /* eslint-disable no-param-reassign */
 /**
 =========================================================
-* Material Kit 2 React - v2.0.0
+* Material Kit 2 PRO React - v2.0.0
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-kit-react
+* Product Page: https://www.creative-tim.com/product/material-kit-pro-react
 * Copyright 2021 Creative Tim (https://www.creative-tim.com)
 
 Coded by www.creative-tim.com
@@ -31,17 +31,18 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import MuiLink from "@mui/material/Link";
 
-// Material Kit 2 React components
+// Material Kit 2 PRO React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 import MKButton from "components/MKButton";
 
-// Material Kit 2 React example components
+// Material Kit 2 PRO React examples
 import DefaultNavbarDropdown from "examples/Navbars/DefaultNavbar/DefaultNavbarDropdown";
 import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMobile";
 
-// Material Kit 2 React base styles
+// Material Kit 2 PRO React base styles
 import breakpoints from "assets/theme/base/breakpoints";
+
 
 function DefaultNavbar({ brand, routes, transparent, light, action, sticky, relative, center }) {
   const [dropdown, setDropdown] = useState("");
@@ -145,9 +146,9 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
                         key={item.name}
                         component={item.route ? Link : MuiLink}
                         to={item.route ? item.route : ""}
-                        href={item.href ? item.href : (e) => e.preventDefault()}
-                        target={item.href ? "_blank" : ""}
-                        rel={item.href ? "noreferrer" : "noreferrer"}
+                        // href={item.href ? item.href : (e) => e.preventDefault()}
+                        // target={item.href ? "_blank" : ""}
+                        // rel={item.href ? "noreferrer" : "noreferrer"}
                         minWidth="11.25rem"
                         display="block"
                         variant="button"
@@ -420,7 +421,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
       popperRef={null}
       open={Boolean(nestedDropdown)}
       placement="right-start"
-      // transition
+      transition
       style={{ zIndex: 10 }}
       onMouseEnter={() => {
         setNestedDropdown(nestedDropdownEl);
@@ -493,6 +494,7 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
               (action.type === "internal" ? (
                 <MKButton
                   component={Link}
+                  onClick={action.onClick}
                   to={action.route}
                   variant={
                     action.color === "white" || action.color === "default"

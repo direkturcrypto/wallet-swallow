@@ -6,24 +6,18 @@ import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card"
 import Modal from "@mui/material/Modal";
 import Divider from "@mui/material/Divider";
-
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-
-import { FixedSizeList } from 'react-window';
+import Icon from "@mui/material/Icon";
 
 import MKBox from "components/MKBox"
 import MKButton from "components/MKButton"
 
+
 import CardBalance from "contents/Components/CardBalance";
-import View from "contents/Components/ViewScroll"
-import secureStorage from "libs/secureStorage";
+import TableAssets from "contents/Components/TableAssets";
 
 import Tokens from "config/token"
 import network from "config/network"
+import secureStorage from "libs/secureStorage";
 
 import _ from "lodash"
 import crypto from "crypto"
@@ -37,14 +31,8 @@ class Dashboard extends React.Component {
 
     this.state = {
       wallet:null,
-      // connector:null,
-      // connected: false,
       chainId:1666600000,
-      // showModal:false,
-      // uri: "",
-      // accounts: [],
       address: "",
-      // result: null,
       balance : 0,
       tokens: [],
       assets: []
@@ -80,16 +68,6 @@ class Dashboard extends React.Component {
     this.setState({tokens,balance})
   }
 
-  renderList = ()=>{
-    return this.state.tokens.map((item, index)=> (
-      <ListItem key={index} component="div" disablePadding>
-        <ListItemButton>
-          <ListItemText primary={item.contract_name} />
-        </ListItemButton>
-      </ListItem>
-    ))
-  }
-
   render () {
     return (
       <MKBox
@@ -99,33 +77,42 @@ class Dashboard extends React.Component {
         }}>
         <MKBox py={2}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={4} lg={4}>
+            <Grid item xs={12} md={5} lg={5}>
               <CardBalance
                 wallet={{address:this.state.address, balance:this.state.balance}}/>
-              {/* <Card>
-                <MKBox width="100%" display="flex" flexDirection="row" 
-                  justifyContent="space-between" 
-                  alignItems="center" 
-                  p={2}>
-                  <MKBox>
-                    <p><b>{this.state.balance} </b>USD</p>
-                  </MKBox>
-                  <MKBox>
-                    <p>setting</p>
-                  </MKBox>
-                </MKBox>
-                <Divider/>
-                <View height="450px" bgColor="none">
-                  {this.renderList()}
-                </View>
-              </Card> */}
             </Grid>
-            <Grid item xs={12} md={8} lg={8}>
-              <Card>
-                <MKBox p={2}>
-                  <p>Your Assets</p>
-                </MKBox>
-              </Card>
+            <Grid item xs={12} md={7} lg={7}>
+              <MKBox p={3} coloredShadow="secondary" borderRadius="5px" mb={3} bgColor="white" shadow="xl">
+                <Grid container justifyContent="center">
+                  <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
+                    <Grid container justifyContent="space-between">
+                      <Grid item xl={2} lg={2} md={2} sm={12} xs={12} mb={{xs:1, md:0}}>
+                        <MKBox color="rgba(0,0,0,.6)" bgColor="#e8e8e8" borderRadius="5px"
+                          shadow="lg"
+                          textAlign="center"
+                          justifyContent="center"
+                          p={1}>
+                          Assets
+                        </MKBox>
+                      </Grid>
+                      <Grid item xl={10} lg={10} md={10} sm={12} xs={12}>
+                        <MKBox width="100%" display="flex" justifyContent="flex-end" alignItems="center">
+                          <MKButton variant="outlined" color="info" size="large">
+                            <Icon color="inherit">add</Icon>
+                            &nbsp;
+                            ADD TOKEN
+                          </MKButton>
+                        </MKBox>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item xl={12} lg={12} md={12} sm={12} xs={12} mt={2}>
+                    <TableAssets
+                      tableData={this.state.tokens}/>
+                  </Grid>
+                </Grid>
+              </MKBox>
             </Grid>
           </Grid>
         </MKBox>
@@ -135,22 +122,3 @@ class Dashboard extends React.Component {
 }
 
 export default Dashboard
-
-function renderRow(props) {
-  const { index, style } = props;
-
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  }
-
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton 
-        onClick={handleListItemClick} 
-        selected={selectedIndex===index}>
-        <ListItemText primary={`Item ${index + 1}`} />
-      </ListItemButton>
-    </ListItem>
-  );
-}

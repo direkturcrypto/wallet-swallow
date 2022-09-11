@@ -12,6 +12,7 @@ import MKButton from "components/MKButton";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from 'qrcode.react';
 
+import {fnumber} from "libs/helper"
 import secureStorage from "libs/secureStorage";
 
 function CardBalance({color, variant, wallet, ...rest}) {
@@ -23,6 +24,7 @@ function CardBalance({color, variant, wallet, ...rest}) {
     initData()
     setBalance(wallet.balance)
     setAddress(wallet.address)
+    console.log({wallet})
   }, [wallet])
 
   const initData = () => {
@@ -31,66 +33,66 @@ function CardBalance({color, variant, wallet, ...rest}) {
   }
 
   return (
-    <MKBox display="flex" variant={variant}
-      bgColor={variant === "contained" ? "grey-100" : color}
+    <MKBox display="flex"
+      bgColor="white"
+      coloredShadow="secondary"
       justifyContent="center"
-      borderRadius="xl"
-      shadow="md"
-      flexDirection="column">
-      <MKBox width="100%" display="flex" 
-        alignItems="center" 
-        justifyContent="center"
-        bgColor="grey-100"
-        p={5}>
-        <QRCode
-          value={privateKey}
-          size={280}
-          level={"L"}/>
-      </MKBox>
-      <MKBox display="flex" 
-        flexDirection="column" 
-        alignItems="center" 
-        justifyContent="center"
-        bgColor="grey-100"
-        borderRadius="xl"
-        py={2}
-        my={1}
-        mx={2}>
-        
-        <MKTypography variant="body2">
-          Receiver
-        </MKTypography>
-        <MKTypography variant="body2" fontSize="small" 
-          textTransform="uppercase" 
-          textGradient
-          fontWeight="bold">
-          {address}
-        </MKTypography>
-      </MKBox>
-
-      <MKBox width="100%" display="flex" 
-        flexDirection={{xs:'column', md:'row'}}
-        alignItems="center" 
-        mb={2}
-        justifyContent="center">
-        <MKBox mr={0.5}>
-          <MKButton type="button" variant="outlined" color="info" size="small">
-            <Icon>send</Icon> &nbsp;Send
-          </MKButton>
-        </MKBox>
-        <MKBox mr={0.5}>
-          <MKButton type="button" variant="outlined" color="info" size="small">
-            <Icon>swap_horizontal_circle</Icon>&nbsp; Swap
-          </MKButton>
-        </MKBox>
-        <MKBox mr={0.5}>
-          <CopyToClipboard text={address}>
-            <MKButton type="button" variant="outlined" color="info" size="small">
-              <Icon>copy</Icon>&nbsp; Copy
-            </MKButton>
-          </CopyToClipboard>
-        </MKBox>
-      </MKBox>
+      borderRadius="5px"
+      shadow="xl">
+      <Grid container justifyContent="center">
+        <Grid item xs={12} md={12}>
+          <MKBox width="100%" pb={1.5} pt={5} px={5}
+            display="flex" 
+            flexDirection="column"
+            alignItems="center" 
+            justifyContent="center"
+            bgColor="grey-100">
+            <QRCode
+              value={privateKey}
+              size={280}
+              level={"L"}/>
+            <MKBox mt={1}>
+              <MKTypography variant="body2" fontSize="small" 
+                textTransform="uppercase" 
+                textGradient
+                fontWeight="bold">
+                {address}
+              </MKTypography>
+            </MKBox>
+          </MKBox>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <MKBox p={2} width="100%" display="flex" justifyContent="center">
+            <MKTypography variant="h5">
+              {fnumber(balance,'en-US', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol'})}
+            </MKTypography>
+          </MKBox>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <MKBox px={2} mb={2} display="flex" justifyContent="center">
+            <Grid container justifyContent="center">
+              <Grid item xs={12} md={3} mr={{xs:0, md:0.5}} mb={{xs:1}}>
+                <MKButton type="button" variant="outlined" color="info" size="small" 
+                  fullWidth>
+                  <Icon sx={{mr:0.3}}>send</Icon>Send
+                </MKButton>
+              </Grid>
+              <Grid item xs={12} md={3} mr={{xs:0, md:0.5}} mb={{xs:1}}>
+                <MKButton type="button" variant="outlined" color="info" size="small" fullWidth>
+                  <Icon sx={{mr:0.3}}>swap_horizontal_circle</Icon>Swap
+                </MKButton>
+              </Grid>
+              <Grid item xs={12} md={3} mr={{xs:0, md:0.5}} mb={{xs:1}}>
+                <CopyToClipboard text={address}>
+                  <MKButton type="button" variant="outlined" color="info" size="small" fullWidth>
+                    <Icon sx={{mr:0.3}}>copy</Icon>&nbsp; Copy
+                  </MKButton>
+                </CopyToClipboard>
+              </Grid>
+            </Grid>
+          </MKBox>
+        </Grid>
+      </Grid>
     </MKBox>
   )
 }
@@ -101,3 +103,24 @@ CardBalance.defaultProps = {
 }
 
 export default CardBalance
+
+{/* <MKBox display="flex" 
+  flexDirection="column" 
+  alignItems="center" 
+  justifyContent="center"
+  bgColor="grey-100"
+  borderRadius="xl"
+  py={2}
+  my={1}
+  mx={2}>
+  
+  <MKTypography variant="body2">
+    Receiver
+  </MKTypography>
+  <MKTypography variant="body2" fontSize="small" 
+    textTransform="uppercase" 
+    textGradient
+    fontWeight="bold">
+    {address}
+  </MKTypography>
+</MKBox> */}
