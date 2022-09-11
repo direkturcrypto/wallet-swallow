@@ -15,6 +15,8 @@ import MKBox from "components/MKBox";
 import MKAvatar from "components/MKAvatar";
 import MKTypography from "components/MKTypography";
 
+import {fnumber} from "libs/helper"
+
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor:'#e8f4f7'
@@ -52,9 +54,7 @@ function TableAssets(props) {
     const rowKey = `row-${idx}`
     return (
       <StyledTableRow hover tabIndex={-1} key={rowKey}>
-        <MKBox
-          component="td"
-          key={idx}
+        <MKBox component="td"
           sx={{ 
             fontSize:'14px',
             padding:'20px !important',
@@ -64,6 +64,27 @@ function TableAssets(props) {
             <MKAvatar src={key.logo_url} variant="rounded" size="sm" />
             <MKTypography variant="button" fontWeight="medium" sx={{ width: "max-content" }}>
               {key.contract_name}
+            </MKTypography>
+          </MKBox>
+        </MKBox>
+        <MKBox component="td"
+          sx={{
+            fontSize:'20px',
+            padding:'20px !important'
+          }}>
+          <MKBox display="flex" flexDirection="column" justifyContent="center" 
+            alignItems="flex-end"
+            py={0.5} px={1}>
+            <MKTypography variant="h6" fontWeight="bold"
+              verticalAlign="middle" 
+              sx={{width:'max-content'}}>
+              {key.quote_rate!==null?key.quote_rate:0} {key.contract_ticker_symbol}
+            </MKTypography>
+            <MKTypography variant="button"
+              color="text"
+              verticalAlign="middle"  
+              sx={{width:'max-content'}}>
+              {fnumber(key.quote,'en-US', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol'})}
             </MKTypography>
           </MKBox>
         </MKBox>
