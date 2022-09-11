@@ -19,7 +19,7 @@ const routes = [
   {
     name: "wallet",
     icon: <Icon>wallet</Icon>,
-    route:"/dashboard",
+    route:"/wallet",
     index:true,
     component : <Dashboard/>,
     key:'wallet',

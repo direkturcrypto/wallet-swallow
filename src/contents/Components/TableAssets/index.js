@@ -57,12 +57,15 @@ function TableAssets(props) {
         <MKBox component="td"
           sx={{
             fontSize:'14px',
-            padding:'10px !important',
-            fontWeight:'bold'
+            padding:'10px !important'
           }}>
-          <MKBox display="flex" alignItems="center" py={0.5} px={1}>
-            <MKAvatar src={key.logo_url} variant="rounded" size="sm" />
-            <MKTypography variant="button" fontWeight="medium" sx={{ width: "max-content" }}>
+          <MKBox display="flex" flexDirection="column" justifyContent="center" alignItems="flex-start">
+            <MKTypography variant="h6" verticalAlign="middle">
+              {key.contract_ticker_symbol}
+            </MKTypography>
+            <MKTypography variant="button" color="text"
+              verticalAlign="middle"  
+              sx={{width:'max-content'}}>
               {key.contract_name}
             </MKTypography>
           </MKBox>
@@ -75,7 +78,7 @@ function TableAssets(props) {
           <MKBox display="flex" flexDirection="column" justifyContent="center" 
             alignItems="flex-end"
             py={0.5} px={1}>
-            <MKTypography variant="h6" fontWeight="bold"
+            <MKTypography variant="h6"
               verticalAlign="middle" 
               sx={{width:'max-content'}}>
               {fnumber(balance,'en-US')} {key.contract_ticker_symbol}
