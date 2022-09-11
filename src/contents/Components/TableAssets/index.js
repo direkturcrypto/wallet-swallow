@@ -10,7 +10,6 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import TableFooter from '@mui/material/TableFooter';
 
 import MKBox from "components/MKBox";
 import MKAvatar from "components/MKAvatar";
@@ -33,7 +32,8 @@ const useStyles = makeStyles({
   stickyHeader:{
     position:'sticky',
     top:0,
-    zIndex:2
+    zIndex:2,
+    backgroundColor:'#f9fafb'
   }
 })
 function TableAssets(props) {
@@ -45,24 +45,7 @@ function TableAssets(props) {
   const [preview,setPreview] = useState(true)
 
   const {
-    tableHead,
-    tableFoot,
     tableData,
-    rawData,
-    tableHeaderColor,
-    tableFooterColor,
-    hover,
-    colorsColls,
-    coloredColls,
-    striped,
-    textAlignForCells,
-    textAlignCells,
-    textAlignForHeaders,
-    textAlignHeaders,
-    textAlignForFooters,
-    textAlignFooters,
-    fontWeightCells,
-    fontWeightForCells
   } = props
 
   const renderRows = tableData.map((key,idx)=>{

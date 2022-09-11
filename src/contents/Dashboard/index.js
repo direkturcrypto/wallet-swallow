@@ -111,7 +111,6 @@ class Dashboard extends React.Component {
                     <TableAssets
                       tableData={this.state.tokens}/>
                   </Grid>
-
                 </Grid>
               </MKBox>
             </Grid>
