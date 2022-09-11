@@ -11,12 +11,13 @@ import Icon from "@mui/material/Icon";
 import MKBox from "components/MKBox"
 import MKButton from "components/MKButton"
 
+
 import CardBalance from "contents/Components/CardBalance";
-import View from "contents/Components/ViewScroll"
-import secureStorage from "libs/secureStorage";
+import TableAssets from "contents/Components/TableAssets";
 
 import Tokens from "config/token"
 import network from "config/network"
+import secureStorage from "libs/secureStorage";
 
 import _ from "lodash"
 import crypto from "crypto"
@@ -76,23 +77,20 @@ class Dashboard extends React.Component {
         }}>
         <MKBox py={2}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={4} lg={4}>
+            <Grid item xs={12} md={5} lg={5}>
               <CardBalance
                 wallet={{address:this.state.address, balance:this.state.balance}}/>
             </Grid>
-            <Grid item xs={12} md={8} lg={8}>
+            <Grid item xs={12} md={7} lg={7}>
               <MKBox p={3} coloredShadow="secondary" borderRadius="5px" mb={3} bgColor="white" shadow="xl">
                 <Grid container justifyContent="center">
                   <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
                     <Grid container justifyContent="space-between">
                       <Grid item xl={2} lg={2} md={2} sm={12} xs={12} mb={{xs:1, md:0}}>
-                        <MKBox color="rgba(0,0,0,.6)"
-                          bgColor="#e8e8e8"
-                          borderRadius="5px"
+                        <MKBox color="rgba(0,0,0,.6)" bgColor="#e8e8e8" borderRadius="5px"
                           shadow="lg"
                           textAlign="center"
                           justifyContent="center"
-                          opacity={1}
                           p={1}>
                           Assets
                         </MKBox>
@@ -107,6 +105,11 @@ class Dashboard extends React.Component {
                         </MKBox>
                       </Grid>
                     </Grid>
+                  </Grid>
+
+                  <Grid item xl={12} lg={12} md={12} sm={12} xs={12} mt={2}>
+                    <TableAssets
+                      tableData={this.state.tokens}/>
                   </Grid>
 
                 </Grid>
