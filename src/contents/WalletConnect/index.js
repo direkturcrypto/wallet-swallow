@@ -14,6 +14,7 @@ function WC() {
     const [wallet, setWallet] = useState(null);
     const [connector, setConnector] = useState(null);
     const [wcStatus, setWCStatus] = useState(null);
+    const [wcTransaction, setWCTransaction] = useState(null);
 
     useEffect(() => {
         if (connector) {
@@ -89,6 +90,14 @@ function WC() {
         })
 
         connector.on("wc_sessionUpdate", console.log)
+
+        connector.on("call_request", (err, payload) => {
+            console.log("call_request", err, payload)
+            // if (payload.method == "eth_sendTransaction") {
+            //     sendTrx(payload)
+            // }
+            setWCTransaction(payload)
+        })
     }
 
     const loadSession = () => {
@@ -107,10 +116,21 @@ function WC() {
         connector.killSession()
     }
 
+    const onUpdateTrx = (data) => {
+        setWCTransaction(data)
+        document.title = `MyWallet`      
+    }
+
     return (
         <MKBox>
             {
-                wcStatus != null ? <ConnectedApp wcStatus={wcStatus} wcDisconnect={() => disconnectApp()}/> : (
+                wcStatus != null ? <ConnectedApp
+                    wcTransaction={wcTransaction}
+                    wcStatus={wcStatus}
+                    wcDisconnect={() => disconnectApp()}
+                    connector={connector}
+                    wallet={wallet}
+                    onUpdateTrx={onUpdateTrx}/> : (
                     <Grid container justifyContent={"center"} textAlign={"center"} spacing={"3"}>
                         <Grid item md={6} xs={12} lg={6} sm={12}>
                             <MKBox p={2}>
