@@ -14,11 +14,12 @@ Coded by www.creative-tim.com
 import Icon from "@mui/material/Icon";
 
 import Dashboard from "contents/Dashboard";
+import WC from "contents/WalletConnect";
 
 const routes = [
   {
-    name: "wallet",
-    icon: <Icon>wallet</Icon>,
+    name: "Dashboard",
+    icon: <Icon>home</Icon>,
     route:"/dashboard",
     index:true,
     component : <Dashboard/>,
@@ -29,10 +30,12 @@ const routes = [
     route:"/transaction",
     key:'transaction',
   },{
-    name: 'account',
-    key:'account',
-    route:'/account/info',
-    icon: <Icon>person</Icon>
+    name: "WalletConnect",
+    icon: <Icon>wallet</Icon>,
+    route:"/dapps",
+    index:true,
+    component : <WC/>,
+    key:'dapps',
   }
 ];
 
