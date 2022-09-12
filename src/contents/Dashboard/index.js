@@ -20,6 +20,7 @@ import network from "config/network"
 import secureStorage from "libs/secureStorage";
 import Provider from "libs/provider";
 
+import config from "config/core"
 import _ from "lodash"
 import axios from "axios"
 import {ethers} from "ethers"
@@ -30,7 +31,7 @@ class Dashboard extends React.Component {
     super(props)
 
     this.state = {
-      isLoading:false,
+      isLoading:true,
       wallet:null,
       chainId:1666600000,
       address: "",
@@ -39,7 +40,7 @@ class Dashboard extends React.Component {
       assets: [],
 
       // pagination
-      rowsPerPage : 15,
+      rowsPerPage : 20,
 			currentPage : 1,
 			totalPages : 0,
 			totalData : 0,
@@ -47,38 +48,44 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount () {
-    this.getWallet()
-    // this.getBalance()
+    this.initProvider()
   }
-  
-  getWallet = async () => {
+
+  initProvider = async () => {
     try {
       const privateKey = secureStorage.getItem('privateKey')
       const provider = new Provider(privateKey, network[0])
       const wallet = provider.wallet
-      const balance = await provider.getBalance()
-
-      console.log({wallet,address:wallet.address, balance})
-  
+      
       this.setState({
-        wallet, 
+        wallet,
         address:wallet.address,
-        isLoading:false
       })
+      this.initToken(wallet.address)
     } catch (err) {
       console.log(err)
       this.setState({isLoading:false})
     }
   }
 
-  // getBalance = () => {
-  //   const tokens = Tokens.items
-  //   let balance = tokens.reduce((prev, curr)=> {
-  //     return prev+curr.quote
-  //   }, 0)
+  initToken = (address) => {
+    this.setState({isLoading:true})
+    const url = `${config.endPoint}${this.state.chainId}/address/${address}/balances_v2/?key=${config.apiKey}`
+    
+    axios.get(url).then(res=>{
+      const result = res.data
+      const tokens = result.data.items
+      const balance = tokens.reduce((prev, curr)=>{
+        return prev+curr.quote
+      }, 0)
 
-  //   this.setState({tokens,balance})
-  // }
+      this.setState({tokens, balance, isLoading:false })
+    }).catch(err=>{
+      this.setState({
+        isLoading:false
+      })
+    })
+  }
 
   render () {
     return (
