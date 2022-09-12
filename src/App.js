@@ -16,7 +16,10 @@ import Layout from "contents"
 import CreateAccount from "contents/Account/Create"
 import RestoreAccount from "contents/Account/Restore"
 import Dashboard from "contents/Dashboard";
+import Transaction from "contents/Transaction"
 import TransactionHistory from "contents/Transaction/History"
+import SendBalance from "contents/Transaction/Send"
+import NotFound from "contents/NotFound"
 
 import secureStorage from "libs/secureStorage"
 
@@ -65,15 +68,17 @@ class App extends React.Component {
 
   render () {
     const  routeTemp = this.getRoutes(routes)
+    console.log(routeTemp)
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Routes>
-          <Route exact path="/account/create" element={<CreateAccount />} key='create-account' />
-          <Route path="/account/restore" element={<RestoreAccount />} key='restore-account' />
-          <Route path="/" element={<Layout key='layout' />}>
+          <Route exact path="/account/create" element={<CreateAccount />} key="create-account" />
+          <Route path="/account/restore" element={<RestoreAccount />} key="restore-account" />
+          <Route path="/" element={<Layout/>} key="layout">
             {routeTemp}
           </Route>
+          <Route path="*" element={<NotFound/>} key="notfound"/>
         </Routes>
       </ThemeProvider>
     );

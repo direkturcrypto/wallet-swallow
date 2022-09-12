@@ -28,6 +28,7 @@ function Layout () {
     confirmRef.current.setShow(true)
   }
   
+  console.log(Outlet)
   return (
     <>
       <ModalConfirmation ref={confirmRef} title="Warning" 
