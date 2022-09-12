@@ -8,12 +8,15 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
+import Zoom from '@mui/material/Zoom';
+
+import Icon from "@mui/material/Icon";
 
 import MKBox from "components/MKBox";
-import MKAvatar from "components/MKAvatar";
 import MKTypography from "components/MKTypography";
 
 import {fnumber} from "libs/helper"
+import MKButton from "components/MKButton";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
@@ -27,34 +30,39 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const useStyles = makeStyles({
-  stickyHeader:{
-    position:'sticky',
-    top:0,
-    zIndex:2,
-    backgroundColor:'#f9fafb'
-  }
-})
+// const useStyles = makeStyles({
+//   stickyHeader:{
+//     position:'sticky',
+//     top:0,
+//     zIndex:2,
+//     backgroundColor:'#f9fafb'
+//   }
+// })
 
-function TableAssets(props) {
-  const classes = useStyles()
+function TableAssets({tableData}) {
+  const [assets, setAssets] = useState([])
 
-	const [sortable,setSortable] = useState(false)
-  const [sticky,setSticky] = useState(false)
-  const [isSorting,setSorting] = useState(false)
-  const [preview,setPreview] = useState(true)
+  useEffect(()=>{
+    const _assets = tableData.map(key=>{
+      return { ...key, show:false }
+    })
+    setAssets(_assets)
+  },[tableData])
 
-  const {
-    tableData,
-  } = props
-
-  const renderRows = tableData.map((key,idx)=>{
+  const renderRows = assets.map((key,idx)=>{
     const rowKey = `row-${idx}`
     const balance = parseInt(key.balance)/ (10 ** key.contract_decimals)
+
+    const toggleButton = (show, index) => {
+      const _assets = [...assets]
+      _assets[index]['show'] = show
+      setAssets(_assets)
+    }
 
     return (
       <StyledTableRow hover tabIndex={-1} key={rowKey}>
         <MKBox component="td"
+          width="80%"
           sx={{
             fontSize:'14px',
             padding:'10px !important'
@@ -71,24 +79,34 @@ function TableAssets(props) {
           </MKBox>
         </MKBox>
         <MKBox component="td"
+          width="20%"
           sx={{
             fontSize:'20px',
             padding:'10px !important'
           }}>
-          <MKBox display="flex" flexDirection="column" justifyContent="center" 
-            alignItems="flex-end"
-            py={0.5} px={1}>
-            <MKTypography variant="h6"
-              verticalAlign="middle" 
-              sx={{width:'max-content'}}>
-              {fnumber(balance,'en-US')} {key.contract_ticker_symbol}
-            </MKTypography>
-            <MKTypography variant="button"
-              color="text"
-              verticalAlign="middle"  
-              sx={{width:'max-content'}}>
-              {fnumber(key.quote,'en-US', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol'})}
-            </MKTypography>
+          <MKBox width="100%" display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end"
+            onMouseLeave={()=> toggleButton(false, idx)}
+            onMouseEnter={(event)=> toggleButton(true, idx)}>
+            
+            <MKBox display="flex" flexDirection="column" justifyContent="center" alignItems="flex-end" py={0.5} 
+              px={1}>
+              <MKTypography variant="h6" verticalAlign="middle" sx={{width:'max-content'}}>
+                {fnumber(balance,'en-US')} {key.contract_ticker_symbol}
+              </MKTypography>
+              <MKTypography variant="button" color="text" verticalAlign="middle" sx={{width:'max-content'}}>
+                {fnumber(key.quote,'en-US', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol'})}
+              </MKTypography>
+            </MKBox>
+
+            <Zoom in={key.show}>
+              <MKBox display={key.show?'flex':'none'} alignItems="flex-end" ml={1}>
+                <MKButton variant="gradient" color="secondary">
+                  <Icon sx={{mr:1}}>send</Icon>
+                  SEND
+                </MKButton>
+              </MKBox>
+            </Zoom>
+
           </MKBox>
         </MKBox>
       </StyledTableRow>

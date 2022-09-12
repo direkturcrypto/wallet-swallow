@@ -23,7 +23,6 @@ import Provider from "libs/provider";
 import config from "config/core"
 import _ from "lodash"
 import axios from "axios"
-import {ethers} from "ethers"
 
 class Dashboard extends React.Component {
 
