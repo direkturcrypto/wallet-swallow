@@ -15,6 +15,8 @@ import routes from "routes"
 import Layout from "contents"
 import CreateAccount from "contents/Account/Create"
 import RestoreAccount from "contents/Account/Restore"
+import Dashboard from "contents/Dashboard";
+import TransactionHistory from "contents/Transaction/History"
 
 import secureStorage from "libs/secureStorage"
 

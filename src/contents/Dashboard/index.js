@@ -18,6 +18,7 @@ import TableAssets from "contents/Components/TableAssets";
 import Tokens from "config/token"
 import network from "config/network"
 import secureStorage from "libs/secureStorage";
+import Provider from "libs/provider";
 
 import _ from "lodash"
 import axios from "axios"
@@ -35,22 +36,28 @@ class Dashboard extends React.Component {
       address: "",
       balance : 0,
       tokens: [],
-      assets: []
+      assets: [],
+
+      // pagination
+      rowsPerPage : 15,
+			currentPage : 1,
+			totalPages : 0,
+			totalData : 0,
     }
   }
 
   componentDidMount () {
     this.getWallet()
-    this.getBalance()
+    // this.getBalance()
   }
   
   getWallet = async () => {
     try {
       const privateKey = secureStorage.getItem('privateKey')
-      const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
-      const wallet = new ethers.Wallet(privateKey, provider)
-      let balance = await provider.getBalance(wallet.address)
-      balance = ethers.utils.formatEther(balance)
+      const provider = new Provider(privateKey, network[0])
+      const wallet = provider.wallet
+      const balance = await provider.getBalance()
+
       console.log({wallet,address:wallet.address, balance})
   
       this.setState({
@@ -64,14 +71,14 @@ class Dashboard extends React.Component {
     }
   }
 
-  getBalance = () => {
-    const tokens = Tokens.items
-    let balance = tokens.reduce((prev, curr)=> {
-      return prev+curr.quote
-    }, 0)
+  // getBalance = () => {
+  //   const tokens = Tokens.items
+  //   let balance = tokens.reduce((prev, curr)=> {
+  //     return prev+curr.quote
+  //   }, 0)
 
-    this.setState({tokens,balance})
-  }
+  //   this.setState({tokens,balance})
+  // }
 
   render () {
     return (

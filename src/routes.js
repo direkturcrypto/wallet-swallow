@@ -14,6 +14,7 @@ Coded by www.creative-tim.com
 import Icon from "@mui/material/Icon";
 
 import Dashboard from "contents/Dashboard";
+import TransactionHistory from "contents/Transaction/History"
 
 const routes = [
   {
@@ -28,6 +29,7 @@ const routes = [
     icon: <Icon>shopping-cart</Icon>,
     route:"/transaction",
     key:'transaction',
+    component:<TransactionHistory/>
   },{
     name: 'account',
     key:'account',
