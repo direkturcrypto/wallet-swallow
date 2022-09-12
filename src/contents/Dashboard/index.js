@@ -15,7 +15,7 @@ import Loaded from "contents/Components/Loaded"
 import CardBalance from "contents/Components/CardBalance";
 import TableAssets from "contents/Components/TableAssets";
 
-import Tokens from "config/token"
+// import Tokens from "config/token"
 import network from "config/network"
 import secureStorage from "libs/secureStorage";
 import Provider from "libs/provider";
@@ -36,14 +36,7 @@ class Dashboard extends React.Component {
       chainId:1666600000,
       address: "",
       balance : 0,
-      tokens: [],
       assets: [],
-
-      // pagination
-      rowsPerPage : 20,
-			currentPage : 1,
-			totalPages : 0,
-			totalData : 0,
     }
   }
 
@@ -74,12 +67,12 @@ class Dashboard extends React.Component {
     
     axios.get(url).then(res=>{
       const result = res.data
-      const tokens = result.data.items
-      const balance = tokens.reduce((prev, curr)=>{
+      const assets = result.data.items
+      const balance = assets.reduce((prev, curr)=>{
         return prev+curr.quote
       }, 0)
 
-      this.setState({tokens, balance, isLoading:false })
+      this.setState({assets, balance, isLoading:false })
     }).catch(err=>{
       this.setState({
         isLoading:false
@@ -129,7 +122,7 @@ class Dashboard extends React.Component {
 
                   <Grid item xl={12} lg={12} md={12} sm={12} xs={12} mt={2}>
                     <TableAssets
-                      tableData={this.state.tokens}/>
+                      tableData={this.state.assets}/>
                   </Grid>
                 </Grid>
               </MKBox>
