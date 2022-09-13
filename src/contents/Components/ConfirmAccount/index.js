@@ -2,7 +2,6 @@
 import React from 'react'
 // @mui material components
 import Grid from "@mui/material/Grid"
-import Slide from "@mui/material/Slide"
 import Modal from "@mui/material/Modal";
 import Divider from "@mui/material/Divider";
 import { Zoom } from '@mui/material';
@@ -18,6 +17,8 @@ import MKTypography from "components/MKTypography";
 import MKInput from 'components/MKInput';
 import MKAlert from 'components/MKAlert';
 
+import Notification from "contents/Components/Notification";
+
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from 'qrcode.react';
 
@@ -29,9 +30,9 @@ export default class ConfirmAccount extends React.Component {
     super(props)
     this.state = {
       show : false,
-      privateKey : '',
-      success : false
+      privateKey : ''
     }
+    this.notifRef = React.createRef()
   }
 
   toggleModal = () => this.setShow(!this.state.show, '');
@@ -67,19 +68,7 @@ export default class ConfirmAccount extends React.Component {
             shadow="xl"
             style={{outline:'none'}}>
             <View>
-              <Slide direction="down" in={this.state.success} unmountOnExit>
-                <MKBox position="absolute" top="0.5rem" left={0} width="100%">
-                  <MKAlert
-                    width="80%"
-                    mx="auto"
-                    color="success"
-                    sx={{ minHeight: "2.5rem !important", py: 1, justifyContent: "center" }}>
-                    <MKTypography variant="body2" color="white" fontWeight="regular">
-                      Code successfully copied!
-                    </MKTypography>
-                  </MKAlert>
-                </MKBox>
-              </Slide>
+              <Notification ref={this.notifRef}/>
               
               <MKBox display="flex" alginitems="center" justifyContent="flex-end" p={2}>
                 <MKTypography variant="h5">Attention !</MKTypography>
@@ -114,14 +103,10 @@ export default class ConfirmAccount extends React.Component {
                         </MKButton>
                       </MKBox>
                       <MKBox mr={1}>
-                        <CopyToClipboard text={this.state.privateKey}>
+                        <CopyToClipboard 
+                          text={this.state.privateKey}
+                          onCopy={(text, result)=> this.notifRef.current.setShow(result,'Code successfully copied!')}>
                           <MKButton variant="outlined"
-                            onClick={()=> {
-                              this.setState({success:true})
-                              setTimeout(() => {
-                                this.setState({success:false})
-                              }, 1000);
-                            }}
                             color="dark">
                             <MKBox color="inherit" mr={0.5} className="fas fa-copy" /> Copy
                           </MKButton>

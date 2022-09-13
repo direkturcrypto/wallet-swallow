@@ -11,18 +11,17 @@ import Icon from "@mui/material/Icon";
 import MKBox from "components/MKBox"
 import MKButton from "components/MKButton"
 
-
+import Loaded from "contents/Components/Loaded"
 import CardBalance from "contents/Components/CardBalance";
 import TableAssets from "contents/Components/TableAssets";
 
-import Tokens from "config/token"
-import network from "config/network"
+// import Tokens from "config/token"
 import secureStorage from "libs/secureStorage";
+import Provider from "libs/provider";
 
+import config from "config/core"
 import _ from "lodash"
-import crypto from "crypto"
 import axios from "axios"
-import {ethers} from "ethers"
 
 class Dashboard extends React.Component {
 
@@ -30,42 +29,54 @@ class Dashboard extends React.Component {
     super(props)
 
     this.state = {
+      isLoading:true,
       wallet:null,
       chainId:1666600000,
       address: "",
       balance : 0,
-      tokens: [],
-      assets: []
+      assets: [],
     }
   }
 
   componentDidMount () {
-    this.getWallet()
-    this.getBalance()
+    this.initProvider()
   }
-  
-  getWallet = async () => {
+
+  initProvider = async () => {
     try {
       const privateKey = secureStorage.getItem('privateKey')
-      const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
-      const wallet = new ethers.Wallet(privateKey, provider)
-      let balance = await provider.getBalance(wallet.address)
-      balance = ethers.utils.formatEther(balance)
-      console.log({wallet,address:wallet.address, balance})
-  
-      this.setState({wallet, address:wallet.address})
+      const network = secureStorage.getItem('network')
+      const provider = new Provider(privateKey, network)
+      const wallet = provider.wallet
+      
+      this.setState({
+        wallet,
+        address:wallet.address,
+      })
+      this.initToken(wallet.address)
     } catch (err) {
       console.log(err)
+      this.setState({isLoading:false})
     }
   }
 
-  getBalance = () => {
-    const tokens = Tokens.items
-    let balance = tokens.reduce((prev, curr)=> {
-      return prev+curr.quote
-    }, 0)
+  initToken = (address) => {
+    this.setState({isLoading:true})
+    const url = `${config.endPoint}${this.state.chainId}/address/${address}/balances_v2/?key=${config.apiKey}`
+    
+    axios.get(url).then(res=>{
+      const result = res.data
+      const assets = result.data.items
+      const balance = assets.reduce((prev, curr)=>{
+        return prev+curr.quote
+      }, 0)
 
-    this.setState({tokens,balance})
+      this.setState({assets, balance, isLoading:false })
+    }).catch(err=>{
+      this.setState({
+        isLoading:false
+      })
+    })
   }
 
   render () {
@@ -75,7 +86,8 @@ class Dashboard extends React.Component {
           p: 2,
           position: "relative"
         }}>
-        <MKBox py={2}>
+        <Loaded open={this.state.isLoading}/>
+        <MKBox pt={2} mx={5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={5} lg={5}>
               <CardBalance
@@ -109,7 +121,7 @@ class Dashboard extends React.Component {
 
                   <Grid item xl={12} lg={12} md={12} sm={12} xs={12} mt={2}>
                     <TableAssets
-                      tableData={this.state.tokens}/>
+                      tableData={this.state.assets}/>
                   </Grid>
                 </Grid>
               </MKBox>

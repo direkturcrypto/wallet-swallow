@@ -8,8 +8,8 @@ function Loaded({open, color, ...options}) {
     return (
       <>
         <Backdrop
-        sx={{ color: color, zIndex: 9999}}
-        open={open} {...options}>
+          sx={{ color: color, zIndex: 9999}}
+          open={open} {...options}>
           <CircularProgress color="inherit" />
         </Backdrop>
       </>
@@ -18,14 +18,14 @@ function Loaded({open, color, ...options}) {
 
 // Setting default values for the props of Loaded
 Loaded.defaultProps = {
-    color: "#fff",
-    open: false,
+  color: "#fff",
+  open: false,
 };
 
 // Typechecking props of the Loaded
 Loaded.propTypes = {
-    color: PropTypes.string,
-    open: PropTypes.bool.isRequired
+  color: PropTypes.string,
+  open: PropTypes.bool.isRequired
 };
 
 export default Loaded

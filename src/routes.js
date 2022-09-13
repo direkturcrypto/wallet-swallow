@@ -14,29 +14,60 @@ Coded by www.creative-tim.com
 import Icon from "@mui/material/Icon";
 
 import Dashboard from "contents/Dashboard";
+import TransactionHistory from "contents/Transaction/History"
+import TransactionDetail from "contents/Transaction/Detail"
+import SendBalance from "contents/Transaction/Send"
 import WC from "contents/WalletConnect";
 
 const routes = [
   {
     name: "Dashboard",
-    icon: <Icon>home</Icon>,
+    icon: <Icon>dashboard</Icon>,
     route:"/dashboard",
     index:true,
     component : <Dashboard/>,
     key:'wallet',
+    show: true
   },{
     name:'transaction',
     icon: <Icon>shopping-cart</Icon>,
     route:"/transaction",
     key:'transaction',
-  },{
+    show:true,
+    collapse : [
+      {
+        index:true,
+        name : 'History',
+        icon : <Icon>history</Icon>,
+        route : '/transaction/history',
+        key : 'transaction-history',
+        component : <TransactionHistory/>,
+        show: false
+      },{
+        name:'detail',
+        icon : <Icon>detail</Icon>,
+        route : '/transaction/detail/:hash',
+        key: 'transaction-detail',
+        component : <TransactionDetail/>,
+        show:false
+      },{
+        name : 'Send',
+        icon : <Icon>send</Icon>,
+        route : '/transaction/send/:address',
+        key : 'send-balance',
+        component : <SendBalance/>,
+        show: false
+      }
+    ]
+  }, {
     name: "WalletConnect",
     icon: <Icon>wallet</Icon>,
     route:"/dapps",
     index:true,
     component : <WC/>,
     key:'dapps',
-  }
+    show: true
+  }  
 ];
 
 export default routes;

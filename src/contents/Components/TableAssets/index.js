@@ -6,14 +6,15 @@ import { styled } from '@mui/material/styles';
 // Table
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Zoom from '@mui/material/Zoom';
+
+import Icon from "@mui/material/Icon";
 
 import MKBox from "components/MKBox";
-import MKAvatar from "components/MKAvatar";
 import MKTypography from "components/MKTypography";
+import MKButton from "components/MKButton";
 
 import {fnumber} from "libs/helper"
 
@@ -24,70 +25,81 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(even)': {
     backgroundColor:'#cbe3ee'
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
 }));
 
-const useStyles = makeStyles({
-  stickyHeader:{
-    position:'sticky',
-    top:0,
-    zIndex:2,
-    backgroundColor:'#f9fafb'
-  }
-})
-function TableAssets(props) {
-  const classes = useStyles()
 
-	const [sortable,setSortable] = useState(false)
-  const [sticky,setSticky] = useState(false)
-  const [isSorting,setSorting] = useState(false)
-  const [preview,setPreview] = useState(true)
 
-  const {
-    tableData,
-  } = props
+function TableAssets({tableData}) {
+  const [assets, setAssets] = useState([])
 
-  const renderRows = tableData.map((key,idx)=>{
+  useEffect(()=>{
+    const _assets = tableData.map(key=>{
+      return { ...key, show:false }
+    })
+    setAssets(_assets)
+  },[tableData])
+
+  const renderRows = assets.map((key,idx)=>{
     const rowKey = `row-${idx}`
     const balance = parseInt(key.balance)/ (10 ** key.contract_decimals)
+
+    const toggleButton = (show, index) => {
+      const _assets = [...assets]
+      _assets[index]['show'] = show
+      setAssets(_assets)
+    }
 
     return (
       <StyledTableRow hover tabIndex={-1} key={rowKey}>
         <MKBox component="td"
-          sx={{ 
+          width="80%"
+          sx={{
             fontSize:'14px',
-            padding:'10px !important',
-            fontWeight:'bold'
+            padding:'10px !important'
           }}>
-          <MKBox display="flex" alignItems="center" py={0.5} px={1}>
-            <MKAvatar src={key.logo_url} variant="rounded" size="sm" />
-            <MKTypography variant="button" fontWeight="medium" sx={{ width: "max-content" }}>
+          <MKBox display="flex" flexDirection="column" justifyContent="center" alignItems="flex-start">
+            <MKTypography variant="h6" verticalAlign="middle">
+              {key.contract_ticker_symbol}
+            </MKTypography>
+            <MKTypography variant="button" color="text"
+              verticalAlign="middle"  
+              sx={{width:'max-content'}}>
               {key.contract_name}
             </MKTypography>
           </MKBox>
         </MKBox>
         <MKBox component="td"
+          width="20%"
           sx={{
             fontSize:'20px',
             padding:'10px !important'
           }}>
-          <MKBox display="flex" flexDirection="column" justifyContent="center" 
-            alignItems="flex-end"
-            py={0.5} px={1}>
-            <MKTypography variant="h6" fontWeight="bold"
-              verticalAlign="middle" 
-              sx={{width:'max-content'}}>
-              {fnumber(balance,'en-US')} {key.contract_ticker_symbol}
-            </MKTypography>
-            <MKTypography variant="button"
-              color="text"
-              verticalAlign="middle"  
-              sx={{width:'max-content'}}>
-              {fnumber(key.quote,'en-US', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol'})}
-            </MKTypography>
+          <MKBox width="100%" display="flex" flexDirection="row" alignItems="center" justifyContent="flex-end"
+            onMouseLeave={()=> toggleButton(false, idx)}
+            onMouseEnter={(event)=> toggleButton(true, idx)}>
+            
+            <MKBox display="flex" flexDirection="column" justifyContent="center" alignItems="flex-end" py={0.5} 
+              px={1}>
+              <MKTypography variant="h6" verticalAlign="middle" sx={{width:'max-content'}}>
+                {fnumber(balance,'en-US')} {key.contract_ticker_symbol}
+              </MKTypography>
+              <MKTypography variant="button" color="text" verticalAlign="middle" sx={{width:'max-content'}}>
+                {fnumber(key.quote,'en-US', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol'})}
+              </MKTypography>
+            </MKBox>
+
+            <Zoom in={key.show}>
+              <MKBox display={key.show?'flex':'none'} alignItems="flex-end" ml={1}>
+                <MKButton variant="gradient" color="secondary">
+                  <Icon sx={{mr:1}}>send</Icon>
+                  SEND
+                </MKButton>
+              </MKBox>
+            </Zoom>
+
           </MKBox>
         </MKBox>
       </StyledTableRow>
@@ -107,6 +119,14 @@ function TableAssets(props) {
       </TableContainer>
     </MKBox>
   )
+}
+
+TableAssets.defaultProps = {
+  tableData : []
+}
+
+TableAssets.propTypes = {
+  tableData : PropTypes.array.isRequired
 }
 
 export default TableAssets
