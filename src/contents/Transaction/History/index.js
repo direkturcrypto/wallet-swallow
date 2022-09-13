@@ -143,10 +143,10 @@ class TransactionHistory extends React.Component {
             flexDirection="column" 
             alignItems="flex-end" justifyContent="flex-end">
             <MKTypography variant="h6" verticalAlign="middle" sx={{width:'max-content'}}>
-              {fnumber(item.value_quote,'en-US')} {this.state.network?.symbol}
+              {fnumber(item.value,'en-US')} {this.state.network?.symbol}
             </MKTypography>
             <MKTypography variant="button" verticalAlign="middle" sx={{width:'max-content'}}>
-              Gas Fee : {fnumber(item.gas_quote,'en-US')} {this.state.network?.symbol}
+              Gas Fee : {parseInt(item.fees_paid)/1e18} {this.state.network?.symbol}
             </MKTypography>
           </MKBox>
         </MKBox>

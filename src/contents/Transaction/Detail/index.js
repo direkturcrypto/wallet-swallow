@@ -82,7 +82,7 @@ function TransactionDetail () {
                         <MKTypography variant="h6">Transaction Success</MKTypography>
                       </MKBox>
                       <MKTypography variant="h5" verticalAlign="middle" sx={{width:'max-content'}}>
-                        {fnumber(row?.value_quote,'en-US')}
+                        {fnumber(row?.value,'en-US')} {network?.symbol}
                       </MKTypography>
                     </MKBox>    
                   </Grid>
@@ -126,13 +126,24 @@ function TransactionDetail () {
                     </MKBox>
                   </Grid>
                 </Grid>
+                <Grid container justifyContent="flex-start" mt={3}>
+                  <Grid item xs={12} md={12}>
+                    <MKBox px={2} width="100%" display="flex" flexDirection="column" alignItems="flex-start"      
+                      justifyContent="center">
+                      <MKTypography variant="button">Gas Price</MKTypography>
+                      <MKTypography variant="button" fontWeight="bold">
+                      {parseInt(row?.gas_price)/1e18} {network?.symbol}
+                      </MKTypography>
+                    </MKBox>
+                  </Grid>
+                </Grid>
                 <Grid container justifyContent="flex-start" my={3}>
                   <Grid item xs={12} md={12}>
                     <MKBox px={2} width="100%" display="flex" flexDirection="column" alignItems="flex-start"      
                       justifyContent="center">
-                      <MKTypography variant="button">Gas</MKTypography>
+                      <MKTypography variant="button">Gas Fee</MKTypography>
                       <MKTypography variant="button" fontWeight="bold">
-                      {fnumber(row?.gas_quote,'en-US')}
+                      {parseInt(row?.fees_paid)/1e18} {network?.symbol}
                       </MKTypography>
                     </MKBox>
                   </Grid>
