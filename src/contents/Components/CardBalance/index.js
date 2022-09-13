@@ -27,7 +27,6 @@ function CardBalance({color, variant, wallet, ...rest}) {
     initData()
     setBalance(wallet.balance)
     setAddress(wallet.address)
-    console.log({wallet})
   }, [wallet])
 
   const initData = () => {

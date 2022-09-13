@@ -87,7 +87,7 @@ class TransactionHistory extends React.Component {
     this.iniData()
   }
 
-  iniData () {
+  iniData (params) {
     this.setState({
       rows:trx.data.items
     })
@@ -186,6 +186,28 @@ class TransactionHistory extends React.Component {
                   </TableContainer>
                 </MKBox>
               </Grid>
+
+              <Grid item xl={12} lg={12} md={12} sm={12} xs={12} mt={2}>
+								<MKBox width="100%">
+									<Pagination
+										totalButton={3}
+										totalPages={this.state.totalPages}
+										totalData={this.state.totalData}
+										currentPage={this.state.currentPage}
+										onChangePage={(currentPage)=>{
+											if(currentPage !== this.state.currentPage){
+												this.setState({currentPage})
+												// this.iniData({currentPage})
+											}
+										}}
+										rowsPerPage={[5,15,25,'All']}
+										defaultRowsPerPage={15}
+										onChangeRowsPerPage={(value)=>{
+											this.setState({rowsPerPage:value,currentPage:1})
+											// this.iniData({rowsPerPage:value,currentPage:1})
+										}}/>
+								</MKBox>
+							</Grid>
 
             </Grid>
           </Card>
