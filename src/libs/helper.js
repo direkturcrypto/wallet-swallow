@@ -53,4 +53,18 @@ function getLastDateOfMonth(year,month){
   }
 }
 
-export {formatCurrency,fnumber,getDateFormat,getToday,getLastDateOfMonth}
+function formatDate(date){
+  const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  let mydate = new Date(date)
+  let formatted_date = mydate.getDate() + "-" + months[mydate.getMonth()] + "-" + mydate.getFullYear()
+  return formatted_date;
+}
+
+function formatDateTime(date){
+  const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+  let mydate = new Date(date)
+  let formatted_date = mydate.getFullYear()  + "-"+ (mydate.getMonth()<10? "0"+mydate.getMonth():mydate.getMonth()) + "-" + (mydate.getDate()<10?"0"+mydate.getDate():mydate.getDate()) + " " +  (mydate.getHours()<10? "0"+mydate.getHours():mydate.getHours()) + ":" + (mydate.getMinutes()<10? "0"+mydate.getMinutes():mydate.getMinutes()) + ":" + (mydate.getSeconds()<10? "0"+mydate.getSeconds():mydate.getSeconds())
+  return formatted_date;
+}
+
+export {formatCurrency,fnumber,getDateFormat,getToday,getLastDateOfMonth,formatDate,formatDateTime}

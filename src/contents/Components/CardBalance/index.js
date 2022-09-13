@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useRef} from "react"
 import PropTypes from "prop-types";
 
 import Grid from "@mui/material/Grid"
@@ -9,6 +9,8 @@ import MKTypography from "components/MKTypography";
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 
+import Notification from "contents/Components/Notification";
+
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from 'qrcode.react';
 
@@ -16,6 +18,7 @@ import {fnumber} from "libs/helper"
 import secureStorage from "libs/secureStorage";
 
 function CardBalance({color, variant, wallet, ...rest}) {
+  const notifRef = useRef()
   const [address, setAddress] = useState("")
   const [balance, setBalance] = useState(0)
   const [privateKey, setPrivateKey] = useState("")
@@ -39,6 +42,7 @@ function CardBalance({color, variant, wallet, ...rest}) {
       justifyContent="center"
       borderRadius="5px"
       shadow="xl">
+      <Notification ref={notifRef}/>
       <Grid container justifyContent="center">
         <Grid item xs={12} md={12}>
           <MKBox width="100%" pb={1.5} pt={5} px={5}
@@ -83,7 +87,9 @@ function CardBalance({color, variant, wallet, ...rest}) {
                 </MKButton>
               </Grid>
               <Grid item xs={12} md={3} mr={{xs:0, md:0.5}} mb={{xs:1}}>
-                <CopyToClipboard text={address}>
+                <CopyToClipboard 
+                  text={address}
+                  onCopy={(text, result)=> notifRef.current.setShow(result,'Code successfully copied!')}>
                   <MKButton type="button" variant="outlined" color="info" size="small" fullWidth>
                     <Icon sx={{mr:0.3}}>copy</Icon>&nbsp; Copy
                   </MKButton>

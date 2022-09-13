@@ -5,18 +5,16 @@ import Grid from "@mui/material/Grid"
 import Card from "@mui/material/Card"
 // import Slide from "@mui/material/Slide"
 import Icon from "@mui/material/Icon";
-import Snackbar from "@mui/material/Snackbar";
-import { makeStyles, withStyles } from '@mui/styles';
+import { withStyles } from '@mui/styles';
 import { styled } from '@mui/material/styles'
 
 // @mui icons
-import CloseIcon from "@mui/icons-material/Close";;
+import CloseIcon from "@mui/icons-material/Close"
 
 import MKBox from "components/MKBox"
 import MKButton from "components/MKButton"
 import MKBadge from "components/MKBadge"
 import MKTypography from "components/MKTypography"
-import MKAlert from "components/MKAlert"
 
 // Table
 import Table from '@mui/material/Table';
@@ -26,6 +24,7 @@ import TableRow from '@mui/material/TableRow';
 
 import Loaded from "contents/Components/Loaded"
 import Pagination from "contents/Components/Pagination"
+import Notification from "contents/Components/Notification";
 
 import secureStorage from "libs/secureStorage"
 import {fnumber} from "libs/helper"
@@ -63,23 +62,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const toastStyles = ({
-  palette: { info },
-  borders: { borderRadius },
-  typography: { size },
-  boxShadows: { lg },
-}) => ({
-  "& .MuiPaper-root": {
-    backgroundColor: info.main,
-    borderRadius: borderRadius.lg,
-    fontSize: size.sm,
-    fontWeight: 400,
-    boxShadow: lg,
-    px: 2,
-    py: 0.5,
-  },
-});
-
 class TransactionHistory extends React.Component {
   constructor(props) {
     super(props)
@@ -97,6 +79,8 @@ class TransactionHistory extends React.Component {
       redirect: null,
       params : null
     }
+
+    this.notifRef= React.createRef()
   }
 
   componentDidMount() {
@@ -107,19 +91,6 @@ class TransactionHistory extends React.Component {
     this.setState({
       rows:trx.data.items
     })
-  }
-
-  toastTemplate = ()=> {
-    return (
-      <MKBox display="flex" justifyContent="space-between" alignItems="center" color="white">
-        Code successfully copied!
-        <CloseIcon
-          fontSize="medium"
-          sx={{ ml: 4, mr: -1, cursor: "pointer" }}
-          onClick={()=> this.setState({copied:!this.state.copied})}
-        />
-      </MKBox>
-    )
   }
 
   renderBody = () => this.state.rows.map((item, index)=> {
@@ -158,12 +129,7 @@ class TransactionHistory extends React.Component {
             </MKBox>
             <MKBox ml={2} sx={{cursor:'pointer'}}>
               <CopyToClipboard text={item.to_address} 
-                onCopy={(text, result)=> {
-                  this.setState({copied:result})
-                  setTimeout(() => {
-                    this.setState({copied:false})
-                  }, 1000);
-                }}>
+                onCopy={(text, result)=> this.notifRef.current.setShow(result,'Code successfully copied!')}>
                 <Icon fontSize="medium">copy</Icon>
               </CopyToClipboard>
             </MKBox>
@@ -189,14 +155,7 @@ class TransactionHistory extends React.Component {
     return (
       <>
         <Loaded open={this.state.isLoading}/>
-
-        <Snackbar
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={this.state.copied}
-          autoHideDuration={1000}
-          onClose={()=> this.setState({copied:!this.state.copied})}
-          message={this.toastTemplate()}
-          sx={toastStyles}/>
+        <Notification ref={this.notifRef}/>
 
         <MKBox wdith="100%" component="section" pt={4} mx={5}>
           <Card sx={{padding:'25px'}}>

@@ -68,7 +68,6 @@ class App extends React.Component {
 
   render () {
     const  routeTemp = this.getRoutes(routes)
-    console.log(routeTemp)
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />

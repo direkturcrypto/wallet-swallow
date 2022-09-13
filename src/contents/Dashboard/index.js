@@ -16,7 +16,6 @@ import CardBalance from "contents/Components/CardBalance";
 import TableAssets from "contents/Components/TableAssets";
 
 // import Tokens from "config/token"
-import network from "config/network"
 import secureStorage from "libs/secureStorage";
 import Provider from "libs/provider";
 
@@ -46,7 +45,8 @@ class Dashboard extends React.Component {
   initProvider = async () => {
     try {
       const privateKey = secureStorage.getItem('privateKey')
-      const provider = new Provider(privateKey, network[0])
+      const network = secureStorage.getItem('network')
+      const provider = new Provider(privateKey, network)
       const wallet = provider.wallet
       
       this.setState({
