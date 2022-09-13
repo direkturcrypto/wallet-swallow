@@ -87,7 +87,7 @@ class Dashboard extends React.Component {
           position: "relative"
         }}>
         <Loaded open={this.state.isLoading}/>
-        <MKBox py={2}>
+        <MKBox pt={2} mx={5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={5} lg={5}>
               <CardBalance

@@ -15,6 +15,7 @@ import Icon from "@mui/material/Icon";
 
 import Dashboard from "contents/Dashboard";
 import TransactionHistory from "contents/Transaction/History"
+import TransactionDetail from "contents/Transaction/Detail"
 import SendBalance from "contents/Transaction/Send"
 
 const routes = [
@@ -38,9 +39,16 @@ const routes = [
         name : 'History',
         icon : <Icon>history</Icon>,
         route : '/transaction/history',
-        key : 'history-transaction',
+        key : 'transaction-history',
         component : <TransactionHistory/>,
         show: false
+      },{
+        name:'detail',
+        icon : <Icon>detail</Icon>,
+        route : '/transaction/detail/:hash',
+        key: 'transaction-detail',
+        component : <TransactionDetail/>,
+        show:false
       },{
         name : 'Send',
         icon : <Icon>send</Icon>,

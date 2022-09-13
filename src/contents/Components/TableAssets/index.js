@@ -30,14 +30,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-// const useStyles = makeStyles({
-//   stickyHeader:{
-//     position:'sticky',
-//     top:0,
-//     zIndex:2,
-//     backgroundColor:'#f9fafb'
-//   }
-// })
+
 
 function TableAssets({tableData}) {
   const [assets, setAssets] = useState([])
