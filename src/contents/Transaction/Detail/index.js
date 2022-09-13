@@ -63,8 +63,8 @@ function TransactionDetail () {
         row&&
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} md={9} sm={12} lg={9}>
-            <MKBox wdith="100%" component="section" pt={4}>
-              <Card sx={{padding:'5px', marginBottom:'50px'}}>
+            <MKBox wdith="100%" component="section" pt={4} mb={3}>
+              <Card sx={{padding:'25px'}}>
                 <Grid container justifyContent="center">
                   <Grid item xs={12} md={12}>
                     <MKBox wdith="100%" display="flex" flexDirection="column" alignItems="center" justifyContent="center">

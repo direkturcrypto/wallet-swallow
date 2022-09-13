@@ -157,7 +157,7 @@ class TransactionHistory extends React.Component {
         <Loaded open={this.state.isLoading}/>
         <Notification ref={this.notifRef}/>
 
-        <MKBox wdith="100%" component="section" pt={4} mx={5}>
+        <MKBox wdith="100%" component="section" pt={4} mx={5} mb={5}>
           <Card sx={{padding:'25px'}}>
             <Grid container justifyContent="center">
               <Grid item xs={12} md={12} sm={12} lg={12}>
