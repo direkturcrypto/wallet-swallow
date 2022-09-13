@@ -138,7 +138,7 @@ class TransactionHistory extends React.Component {
         <MKBox component="td" width="88%" sx={{padding:'20px',fontSize:'20px'}}>
           <MKBox width="100%" display="flex" alignItems="center" justifyContent="flex-end">
             <MKTypography variant="h5" verticalAlign="middle" sx={{width:'max-content'}}>
-              {fnumber(item.gas_quote,'en-US')}
+              {fnumber(item.value_quote,'en-US')}
             </MKTypography>
           </MKBox>
         </MKBox>

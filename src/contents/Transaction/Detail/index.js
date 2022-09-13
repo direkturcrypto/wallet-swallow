@@ -82,7 +82,7 @@ function TransactionDetail () {
                         <MKTypography variant="h6">Transaction Success</MKTypography>
                       </MKBox>
                       <MKTypography variant="h5" verticalAlign="middle" sx={{width:'max-content'}}>
-                        {fnumber(row?.value,'en-US')}
+                        {fnumber(row?.value_quote,'en-US')}
                       </MKTypography>
                     </MKBox>    
                   </Grid>
