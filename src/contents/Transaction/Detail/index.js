@@ -128,7 +128,8 @@ function TransactionDetail () {
                 </Grid>
                 <Grid container justifyContent="flex-start" my={3}>
                   <Grid item xs={12} md={12}>
-                    <MKBox px={2} width="100%" display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
+                    <MKBox px={2} width="100%" display="flex" flexDirection="column" alignItems="flex-start"      
+                      justifyContent="center">
                       <MKTypography variant="button">Gas</MKTypography>
                       <MKTypography variant="button" fontWeight="bold">
                       {fnumber(row?.gas_quote,'en-US')}
@@ -141,7 +142,8 @@ function TransactionDetail () {
                     <Divider sx={{ my: 1 }} />
                     <Grid container justifyContent="flex-start" mt={3}>
                       <Grid item xs={12} md={12}>
-                        <MKBox px={2} width="100%" display="flex" flexDirection="row" justifyContent="flex-start" alignItems="flex-end">
+                        <MKBox px={2} width="100%" display="flex" flexDirection="row" justifyContent="flex-start"             
+                          alignItems="flex-end">
                           <MKBox display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
                             <MKTypography variant="button">Transaction Hash</MKTypography>
                             <MKTypography variant="button"
@@ -187,7 +189,9 @@ function TransactionDetail () {
                     </Grid>
                     <Grid container justifyContent="flex-start" mt={3}>
                       <Grid item xs={12} md={12}>
-                        <MKBox px={2} width="100%" display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
+                        <MKBox px={2} width="100%" display="flex" flexDirection="column" 
+                          alignItems="flex-start" 
+                          justifyContent="center">
                           <MKTypography variant="button">Time</MKTypography>
                           <MKTypography variant="button" fontWeight="bold">
                           {formatDateTime(row?.block_signed_at)}
