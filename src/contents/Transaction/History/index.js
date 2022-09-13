@@ -77,7 +77,8 @@ class TransactionHistory extends React.Component {
       copied:false,
 
       redirect: null,
-      params : null
+      params : null,
+      network : null
     }
 
     this.notifRef= React.createRef()
@@ -88,7 +89,9 @@ class TransactionHistory extends React.Component {
   }
 
   iniData (params) {
+    const network = secureStorage.getItem('network')
     this.setState({
+      network,
       rows:trx.data.items
     })
   }
@@ -136,9 +139,14 @@ class TransactionHistory extends React.Component {
           </MKBox>
         </MKBox>
         <MKBox component="td" width="88%" sx={{padding:'20px',fontSize:'20px'}}>
-          <MKBox width="100%" display="flex" alignItems="center" justifyContent="flex-end">
-            <MKTypography variant="h5" verticalAlign="middle" sx={{width:'max-content'}}>
-              {fnumber(item.value_quote,'en-US')}
+          <MKBox width="100%" display="flex"
+            flexDirection="column" 
+            alignItems="flex-end" justifyContent="flex-end">
+            <MKTypography variant="h6" verticalAlign="middle" sx={{width:'max-content'}}>
+              {fnumber(item.value_quote,'en-US')} {this.state.network?.symbol}
+            </MKTypography>
+            <MKTypography variant="button" verticalAlign="middle" sx={{width:'max-content'}}>
+              Gas Fee : {fnumber(item.gas_quote,'en-US')} {this.state.network?.symbol}
             </MKTypography>
           </MKBox>
         </MKBox>

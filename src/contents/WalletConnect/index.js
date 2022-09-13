@@ -122,43 +122,43 @@ function WC() {
 
     return (
         <MKBox>
-            {
-                wcStatus != null ? <ConnectedApp
-                    wcTransaction={wcTransaction}
-                    wcStatus={wcStatus}
-                    wcDisconnect={() => disconnectApp()}
-                    connector={connector}
-                    wallet={wallet}
-                    onUpdateTrx={onUpdateTrx}/> : (
-                    <Grid container justifyContent={"center"} textAlign={"center"} spacing={"3"}>
-                        <Grid item md={6} xs={12} lg={6} sm={12}>
-                            <MKBox p={2}>
-                                <Card>
-                                    <MKBox p={2}>
-                                        <p>Connect Dapps Using Wallet Connect</p>
-                                        <hr/>
-                                        <br/>
-                                        <img src={WCLogo} width={300}/>
-                                        <br/>
-                                        <h2>WalletConnect</h2>
-                                        <p>Open Protocol for Connecting Wallets to Dapps</p>
-                                        <br/>
+					{
+						wcStatus != null ? <ConnectedApp
+							wcTransaction={wcTransaction}
+							wcStatus={wcStatus}
+							wcDisconnect={() => disconnectApp()}
+							connector={connector}
+							wallet={wallet}
+							onUpdateTrx={onUpdateTrx}/> : (
+							<Grid container justifyContent={"center"} textAlign={"center"} spacing={"3"}>
+									<Grid item md={6} xs={12} lg={6} sm={12}>
+											<MKBox p={2}>
+													<Card>
+															<MKBox p={2}>
+																	<p>Connect Dapps Using Wallet Connect</p>
+																	<hr/>
+																	<br/>
+																	<img src={WCLogo} width={300}/>
+																	<br/>
+																	<h2>WalletConnect</h2>
+																	<p>Open Protocol for Connecting Wallets to Dapps</p>
+																	<br/>
 
-                                        <MKButton color="secondary" size="large" variant="gradient" fullWidth onClick={() => pasteQR()}>
-                                            Paste QR
-                                        </MKButton>
-                                        <small> Or </small>
-                                        <MKButton color="info" size="large" variant="gradient" fullWidth>
-                                            Scan QR
-                                        </MKButton>
-                                    </MKBox>
-                                </Card>
-                            </MKBox>
-                        </Grid>
-                    </Grid>
-                )
-            }
-        </MKBox>
+																	<MKButton color="secondary" size="large" variant="gradient" fullWidth onClick={() => pasteQR()}>
+																			Paste QR
+																	</MKButton>
+																	<small> Or </small>
+																	<MKButton color="info" size="large" variant="gradient" fullWidth>
+																			Scan QR
+																	</MKButton>
+															</MKBox>
+													</Card>
+											</MKBox>
+									</Grid>
+							</Grid>
+						)
+					}
+			</MKBox>
     )
 }
 
