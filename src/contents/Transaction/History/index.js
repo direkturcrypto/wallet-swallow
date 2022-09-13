@@ -27,7 +27,7 @@ import Pagination from "contents/Components/Pagination"
 import Notification from "contents/Components/Notification";
 
 import secureStorage from "libs/secureStorage"
-import {fnumber} from "libs/helper"
+import {fnumber, formatDateTime} from "libs/helper"
 import config from "config/core"
 import axios from "axios"
 
@@ -124,7 +124,7 @@ class TransactionHistory extends React.Component {
                 </MKTypography>
               </MKBox>
               <MKTypography variant="button" color="text">
-                {item.block_signed_at}
+                {formatDateTime(item?.block_signed_at)}
               </MKTypography>
             </MKBox>
             <MKBox ml={2} sx={{cursor:'pointer'}}>
@@ -197,14 +197,14 @@ class TransactionHistory extends React.Component {
 										onChangePage={(currentPage)=>{
 											if(currentPage !== this.state.currentPage){
 												this.setState({currentPage})
-												// this.iniData({currentPage})
+												this.iniData({currentPage})
 											}
 										}}
 										rowsPerPage={[5,15,25,'All']}
 										defaultRowsPerPage={15}
 										onChangeRowsPerPage={(value)=>{
 											this.setState({rowsPerPage:value,currentPage:1})
-											// this.iniData({rowsPerPage:value,currentPage:1})
+											this.iniData({rowsPerPage:value,currentPage:1})
 										}}/>
 								</MKBox>
 							</Grid>
