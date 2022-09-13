@@ -93,10 +93,9 @@ function WC() {
 
         connector.on("call_request", (err, payload) => {
             console.log("call_request", err, payload)
-            // if (payload.method == "eth_sendTransaction") {
-            //     sendTrx(payload)
-            // }
-            setWCTransaction(payload)
+            if (payload.method == "eth_sendTransaction") {
+                setWCTransaction(payload)
+            }
         })
     }
 
