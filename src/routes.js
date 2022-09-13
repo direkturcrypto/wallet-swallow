@@ -17,10 +17,11 @@ import Dashboard from "contents/Dashboard";
 import TransactionHistory from "contents/Transaction/History"
 import TransactionDetail from "contents/Transaction/Detail"
 import SendBalance from "contents/Transaction/Send"
+import WC from "contents/WalletConnect";
 
 const routes = [
   {
-    name: "dashboard",
+    name: "Dashboard",
     icon: <Icon>dashboard</Icon>,
     route:"/dashboard",
     index:true,
@@ -58,13 +59,15 @@ const routes = [
         show: false
       }
     ]
-  },{
-    name: 'account',
-    key:'account',
-    route:'/account/info',
-    icon: <Icon>person</Icon>,
-    show:true
-  }
+  }, {
+    name: "WalletConnect",
+    icon: <Icon>wallet</Icon>,
+    route:"/dapps",
+    index:true,
+    component : <WC/>,
+    key:'dapps',
+    show: true
+  }  
 ];
 
 export default routes;
