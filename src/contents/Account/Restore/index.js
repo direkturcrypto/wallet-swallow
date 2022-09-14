@@ -68,7 +68,7 @@ class RestoreAccount extends React.Component {
     }
     else {
       try {
-        const provider = new Provider(privateKey, network[0])
+        const provider = new Provider(this.state.privateKey, network[0])
 
         secureStorage.setItem('privateKey', this.state.privateKey)
         secureStorage.setItem('networks', network)
