@@ -14,15 +14,16 @@ import MKInput from "components/MKInput"
 import MKAlert from "components/MKAlert"
 import MKTypography from "components/MKTypography"
 
-import secureStorage from "libs/secureStorage"
 
 import Loaded from "contents/Components/Loaded"
 import ModalConfirm from "contents/Components/ConfirmAccount"
 import Background from "contents/Components/Background"
 
+import secureStorage from "libs/secureStorage"
+import Provider from "libs/provider";
+
 import network from "config/network"
 import crypto from "crypto"
-import {ethers} from "ethers"
 
 // function CreateAccount() {
 class CreateAccount extends React.Component {
@@ -74,11 +75,10 @@ class CreateAccount extends React.Component {
     } else {
       try {
         const privateKey = crypto.createHmac("sha256", this.state.uniqueText).update(this.state.secretText).digest("hex")
-        const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
-        const wallet = new ethers.Wallet(privateKey, provider)
-        // let balance = await provider.getBalance(wallet.address)
-        // balance = ethers.utils.formatEther(balance)
-        console.log({wallet, privateKey})
+        const provider = new Provider(privateKey, network[0])
+        const wallet = provider.wallet
+
+        console.log(provider)
         this.setState({
           isLoading : false,
           isAlert : false,
@@ -97,7 +97,8 @@ class CreateAccount extends React.Component {
 
   onSignIn = ()=>{
     secureStorage.setItem('privateKey', this.state.privateKey)
-    secureStorage.setItem('network', network[0])
+    secureStorage.setItem('networks', network)
+    secureStorage.setItem('selectedNetwork', network[0])
     this.setState({isLoggIn:true})
   }
 

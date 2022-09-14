@@ -15,14 +15,16 @@ import MKInput from "components/MKInput"
 import MKAlert from "components/MKAlert"
 import MKTypography from "components/MKTypography"
 
-import secureStorage from "libs/secureStorage"
 import Loaded from "contents/Components/Loaded"
 import ModalConfirm from "contents/Components/ConfirmAccount"
 import Background from "contents/Components/Background"
 
 import network from "config/network"
-import crypto from "crypto"
-import {ethers} from "ethers"
+// import crypto from "crypto"
+// import {ethers} from "ethers"
+
+import Provider from "libs/provider";
+import secureStorage from "libs/secureStorage"
 
 class RestoreAccount extends React.Component {
   
@@ -66,11 +68,11 @@ class RestoreAccount extends React.Component {
     }
     else {
       try {
-        const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
-        const wallet = new ethers.Wallet(this.state.privateKey, provider);
+        const provider = new Provider(privateKey, network[0])
 
-        console.log({wallet})
         secureStorage.setItem('privateKey', this.state.privateKey)
+        secureStorage.setItem('networks', network)
+        secureStorage.setItem('selectedNetwork', network[0])
         this.setState({
           isAlert:false,
           isLoading:false,

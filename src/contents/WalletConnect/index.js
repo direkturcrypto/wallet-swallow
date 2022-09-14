@@ -10,11 +10,14 @@ import {ethers} from "ethers"
 import network from "config/network"
 import ConnectedApp from "./connectedApp"
 
+import Provider from "libs/provider";
+
 function WC() {
     const [wallet, setWallet] = useState(null);
     const [connector, setConnector] = useState(null);
     const [wcStatus, setWCStatus] = useState(null);
     const [wcTransaction, setWCTransaction] = useState(null);
+    const [selectedNetwork, setSelectedNetwork] = useState(null)
 
     useEffect(() => {
         if (connector) {
@@ -34,9 +37,12 @@ function WC() {
 
     const loadWallet = () => {
         const privateKey = secureStorage.getItem('privateKey')
-        const provider = new ethers.providers.JsonRpcProvider(network[0].rpcUrl)
-        const account = new ethers.Wallet(privateKey, provider)
+        const _selectedNetwork = secureStorage.getItem('selectedNetwork')
+        const provider = new Provider(privateKey, selectedNetwork)
+        const account = provider.wallet
+        
         setWallet(account);
+        setSelectedNetwork(_selectedNetwork)
     }
 
     const pasteQR = () => {
@@ -70,7 +76,7 @@ function WC() {
                 let account = await wallet.getAddress()
                 connector.approveSession({
                     accounts: [account],
-                    chainId: network[0].chainId
+                    chainId: selectedNetwork?.chainId
                 })
             }
         })

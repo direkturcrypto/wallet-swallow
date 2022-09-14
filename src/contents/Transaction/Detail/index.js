@@ -24,6 +24,7 @@ import secureStorage from "libs/secureStorage"
 
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from 'qrcode.react';
+import {ethers} from "ethers"
 
 const useStyles = makeStyles({})
 
@@ -36,12 +37,15 @@ function TransactionDetail () {
 
   const [hash, setHash] = useState("")
   const [row, setRow] = useState(null)
-  const [network, setNetwork] = useState(null)
+  const [networks, setNetworks] = useState(null)
+  const [selectedNetwork, setSelectedNetwork] = useState(null)
 
   useEffect(()=>{
-    const _network = secureStorage.getItem('network')
+    const _networks = secureStorage.getItem('networks')
+    const _selectedNetwork = secureStorage.getItem('selectedNetwork')
     const _row = secureStorage.getItem('detail')
-    setNetwork(_network)
+    setNetworks(_networks)
+    setSelectedNetwork(_selectedNetwork)
     setHash(params?.hash)
     if (_row)
       setRow(_row)
@@ -82,7 +86,7 @@ function TransactionDetail () {
                         <MKTypography variant="h6">Transaction Success</MKTypography>
                       </MKBox>
                       <MKTypography variant="h5" verticalAlign="middle" sx={{width:'max-content'}}>
-                        {fnumber(row?.value,'en-US')} {network?.symbol}
+                        {parseInt(row.value)/1e18} {selectedNetwork?.symbol}
                       </MKTypography>
                     </MKBox>    
                   </Grid>
@@ -132,7 +136,8 @@ function TransactionDetail () {
                       justifyContent="center">
                       <MKTypography variant="button">Gas Price</MKTypography>
                       <MKTypography variant="button" fontWeight="bold">
-                      {parseInt(row?.gas_price)/1e18} {network?.symbol}
+                      {parseInt(row?.gas_price)/1e18} {selectedNetwork?.symbol}
+                      {/* {ethers.BigNumber.from(row?.gas_price)} {selectedNetwork?.symbol} */}
                       </MKTypography>
                     </MKBox>
                   </Grid>
@@ -143,7 +148,7 @@ function TransactionDetail () {
                       justifyContent="center">
                       <MKTypography variant="button">Gas Fee</MKTypography>
                       <MKTypography variant="button" fontWeight="bold">
-                      {parseInt(row?.fees_paid)/1e18} {network?.symbol}
+                      {parseInt(row?.fees_paid)/1e18} {selectedNetwork?.symbol}
                       </MKTypography>
                     </MKBox>
                   </Grid>
@@ -219,12 +224,12 @@ function TransactionDetail () {
                         size={150}
                         level={"L"}
                         id="urlExplore"
-                        value={`${network?.explorerUrl}/${row?.tx_hash}`}/>
+                        value={`${selectedNetwork?.explorerUrl}/${row?.tx_hash}`}/>
                       <MKBox mt={1} sx={{cursor:'pointer'}} display="flex" flexDirection="row">
                         <MKTypography color="text" variant="button" fontSize="medium">Query Url</MKTypography>
                         <CopyToClipboard
                           onCopy={(text, result)=> notifRef.current.setShow(result,'Code successfully copied!')}  
-                          text={`${network?.explorerUrl}${row?.tx_hash}`} style={{marginLeft:'5px'}}>
+                          text={`${selectedNetwork?.explorerUrl}${row?.tx_hash}`} style={{marginLeft:'5px'}}>
                           <Icon fontSize="medium">copy</Icon>
                         </CopyToClipboard>
                       </MKBox>

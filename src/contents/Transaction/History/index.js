@@ -28,6 +28,7 @@ import Notification from "contents/Components/Notification";
 
 import secureStorage from "libs/secureStorage"
 import {fnumber, formatDateTime} from "libs/helper"
+
 import config from "config/core"
 import axios from "axios"
 
@@ -72,13 +73,12 @@ class TransactionHistory extends React.Component {
 			totalData: 0,
       rows : [],
 
-      headers : ['#','Trx Hash'],
       isLoading : false,
-      copied:false,
 
       redirect: null,
       params : null,
-      network : null
+      network : [],
+      selectedNetwork:null
     }
 
     this.notifRef= React.createRef()
@@ -89,9 +89,9 @@ class TransactionHistory extends React.Component {
   }
 
   iniData (params) {
-    const network = secureStorage.getItem('network')
+    const selectedNetwork = secureStorage.getItem('selectedNetwork')
     this.setState({
-      network,
+      selectedNetwork,
       rows:trx.data.items
     })
   }
@@ -143,10 +143,10 @@ class TransactionHistory extends React.Component {
             flexDirection="column" 
             alignItems="flex-end" justifyContent="flex-end">
             <MKTypography variant="h6" verticalAlign="middle" sx={{width:'max-content'}}>
-              {fnumber(item.value,'en-US')} {this.state.network?.symbol}
+              {parseInt(item.value)/1e18} {this.state.selectedNetwork?.symbol}
             </MKTypography>
             <MKTypography variant="button" verticalAlign="middle" sx={{width:'max-content'}}>
-              Gas Fee : {parseInt(item.fees_paid)/1e18} {this.state.network?.symbol}
+              Gas Fee : {parseInt(item.fees_paid)/1e18} {this.state.selectedNetwork?.symbol}
             </MKTypography>
           </MKBox>
         </MKBox>

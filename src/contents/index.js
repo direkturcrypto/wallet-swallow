@@ -34,6 +34,7 @@ function Layout () {
         message="are you sure you want to get out ?"
         onConfirm={()=>{
           secureStorage.removeItem('privateKey')
+          secureStorage.clear()
           navigate('/account/create')
         }}/>
       <MKBox bgColor="dark" shadow="sm" py={0.25}>
