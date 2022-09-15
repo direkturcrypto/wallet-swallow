@@ -38,7 +38,7 @@ function WC() {
     const loadWallet = () => {
         const privateKey = secureStorage.getItem('privateKey')
         const _selectedNetwork = secureStorage.getItem('selectedNetwork')
-        const provider = new Provider(privateKey, selectedNetwork)
+        const provider = new Provider(privateKey, _selectedNetwork)
         const account = provider.wallet
         
         setWallet(account);
