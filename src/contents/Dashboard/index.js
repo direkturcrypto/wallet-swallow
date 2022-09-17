@@ -64,26 +64,22 @@ class Dashboard extends React.Component {
   initToken = async (address) => {
     this.setState({isLoading:true})
     try {
-      // const assets = getItem('assets')
-      // if (!assets) {
+      let assets = getItem('assets')
+      if (!assets) {
+        console.log('[HIT]')
         const url = `${config.endPoint}${this.state.chainId}/address/${address}/balances_v2/?key=${config.apiKey}`
         const res = await axios.get(url)
-        console.log(res)
-        // axios.get(url).then(res=>{
-        //   const result = res.data
-        //   const assets = result.data.items
-        //   const balance = assets.reduce((prev, curr)=>{
-        //     return prev+curr.quote
-        //   }, 0)
-    
-        //   setItem('tokens', assets)
-        //   this.setState({assets, balance, isLoading:false })
-        // }).catch(err=>{
-        //   this.setState({
-        //     isLoading:false
-        //   })
-        // })
-      // }
+        const result = res.data
+        assets = result.data.items
+        setItem('assets', assets)
+      }
+      const balance = assets.reduce((prev, curr)=>{
+        return prev+curr.quote
+      }, 0)
+      
+      // console.log({assets, balance})
+      this.setState({assets, balance, isLoading: false})
+
     } catch (err) {
       console.log('ERR : ', err)
       this.setState({isLoading:false})

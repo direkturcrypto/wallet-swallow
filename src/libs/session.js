@@ -16,7 +16,7 @@ const setItem = (key, value, expire) => {
 
 const getItem = (key) => {
   const item = secureStorage.getItem(key)
-  console.log(item)
+  // console.log(item)
   if (!item)
     return null
 
