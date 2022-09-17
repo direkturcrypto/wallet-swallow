@@ -7,7 +7,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import MKBox from "components/MKBox"
 
 const toastStyles = ({
-  palette: { info },
+  palette: { info, error },
   borders: { borderRadius },
   typography: { size },
   boxShadows: { lg },

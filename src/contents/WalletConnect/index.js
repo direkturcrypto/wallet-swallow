@@ -9,10 +9,12 @@ import secureStorage from "libs/secureStorage";
 import {ethers} from "ethers"
 import network from "config/network"
 import ConnectedApp from "./connectedApp"
+import QRCodeScanner from "./qrcodescaner"
 
 import Provider from "libs/provider";
 
 function WC() {
+		const [scanner, setScanner] = useState(false)
     const [wallet, setWallet] = useState(null);
     const [connector, setConnector] = useState(null);
     const [wcStatus, setWCStatus] = useState(null);
@@ -46,10 +48,14 @@ function WC() {
     }
 
     const pasteQR = () => {
+			try {
         let dataQr = prompt("Paste Your QRCode")
         if (dataQr) {
             connectDapps(dataQr)
         }
+			} catch (err) {
+				console.log(err)
+			}
     }
 
     const connectDapps = async (data) => {
@@ -126,6 +132,27 @@ function WC() {
         document.title = `MyWallet`      
     }
 
+		const onQRCodeValidate = (data) => {
+			const res = {
+				error: null,
+				result: null,
+			}
+			try {
+				res.result = data
+			} catch (err) {
+				res.error = error
+			}
+			return res
+		}
+
+		const onQRCodeScan = (data) => {
+			const uri = typeof data === "string" ? data : "";
+			if (uri) {
+				connectDapps(uri)
+				setScanner(false)
+			}
+		}
+
     return (
         <MKBox>
 					{
@@ -154,7 +181,7 @@ function WC() {
 																			Paste QR
 																	</MKButton>
 																	<small> Or </small>
-																	<MKButton color="info" size="large" variant="gradient" fullWidth>
+																	<MKButton color="info" size="large" variant="gradient" fullWidth onClick={()=> setScanner(true)}>
 																			Scan QR
 																	</MKButton>
 															</MKBox>
@@ -164,6 +191,15 @@ function WC() {
 							</Grid>
 						)
 					}
+					{scanner && (
+            <QRCodeScanner
+              onValidate={onQRCodeValidate}
+              onScan={onQRCodeScan}
+              onError={(error)=>{
+								console.log(error)
+							}}
+              onClose={()=> setScanner(false)}/>
+          )}
 			</MKBox>
     )
 }

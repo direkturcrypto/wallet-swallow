@@ -136,8 +136,7 @@ function TransactionDetail () {
                       justifyContent="center">
                       <MKTypography variant="button">Gas Price</MKTypography>
                       <MKTypography variant="button" fontWeight="bold">
-                      {parseInt(row?.gas_price)/1e18} {selectedNetwork?.symbol}
-                      {/* {ethers.BigNumber.from(row?.gas_price)} {selectedNetwork?.symbol} */}
+                      {ethers.utils.formatEther(row.gas_price)} {selectedNetwork?.symbol}
                       </MKTypography>
                     </MKBox>
                   </Grid>
@@ -148,7 +147,8 @@ function TransactionDetail () {
                       justifyContent="center">
                       <MKTypography variant="button">Gas Fee</MKTypography>
                       <MKTypography variant="button" fontWeight="bold">
-                      {parseInt(row?.fees_paid)/1e18} {selectedNetwork?.symbol}
+                      {/* {parseInt(row?.fees_paid)/1e18} {selectedNetwork?.symbol} */}
+                      {ethers.utils.formatEther(row.fees_paid)} {selectedNetwork?.symbol}
                       </MKTypography>
                     </MKBox>
                   </Grid>
