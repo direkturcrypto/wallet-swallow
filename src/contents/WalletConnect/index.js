@@ -154,6 +154,7 @@ function WC() {
 		}
 
     return (
+			<>
         <MKBox>
 					{
 						wcStatus != null ? <ConnectedApp
@@ -191,16 +192,17 @@ function WC() {
 							</Grid>
 						)
 					}
-					{scanner && (
-            <QRCodeScanner
-              onValidate={onQRCodeValidate}
-              onScan={onQRCodeScan}
-              onError={(error)=>{
-								console.log(error)
-							}}
-              onClose={()=> setScanner(false)}/>
-          )}
-			</MKBox>
+				</MKBox>
+				{scanner && (
+					<QRCodeScanner
+						onValidate={onQRCodeValidate}
+						onScan={onQRCodeScan}
+						onError={(error)=>{
+							console.log(error)
+						}}
+						onClose={()=> setScanner(false)}/>
+				)}
+			</>
     )
 }
 
