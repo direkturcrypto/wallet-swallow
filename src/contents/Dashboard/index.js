@@ -66,7 +66,6 @@ class Dashboard extends React.Component {
     try {
       let assets = getItem('assets')
       if (!assets) {
-        console.log('[HIT]')
         const url = `${config.endPoint}${this.state.chainId}/address/${address}/balances_v2/?key=${config.apiKey}`
         const res = await axios.get(url)
         const result = res.data

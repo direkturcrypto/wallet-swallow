@@ -20,9 +20,9 @@ const getItem = (key) => {
   if (!item)
     return null
 
-  console.log({ttl:item.ttl, now: Date.now()})
+  // console.log({ttl:item.ttl, now: Date.now()})
   if (Date.now()>item.ttl) {
-    console.log('[EXPIRE]')
+    // console.log('[EXPIRE]')
     secureStorage.removeItem(key)
     return null
   }
