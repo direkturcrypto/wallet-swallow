@@ -67,7 +67,7 @@ const routes = [
     component : <WC/>,
     key:'dapps',
     show: true
-  }  
+  }
 ];
 
 export default routes;
