@@ -14,7 +14,7 @@ const SQRCodeScannerContainer = styled.div`
 `;
 
 const SQRCodeScannerWrapper = styled.div`
-  position: relative;
+
   width: 100%;
   height: 100%;
   max-width: 600px;
@@ -104,7 +104,9 @@ class QRCodeScanner extends React.Component {
             delay={this.state.delay}
             onError={this.handleError}
             onScan={this.handleScan}
-            style={{ width: "100%" }}
+            videoContainerStyle={{
+              position:'inherit'
+            }}
           />
         </SQRCodeScannerWrapper>
       </SQRCodeScannerContainer>

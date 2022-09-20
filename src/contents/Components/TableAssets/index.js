@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react"
+import {Link} from "react-router-dom"
 import PropTypes from "prop-types";
 import { makeStyles } from '@mui/styles';
 import { styled } from '@mui/material/styles';
@@ -43,6 +44,7 @@ function TableAssets({tableData}) {
   },[tableData])
 
   const renderRows = assets.map((key,idx)=>{
+    console.log({key})
     const rowKey = `row-${idx}`
     const balance = parseInt(key.balance)/ (10 ** key.contract_decimals)
 
@@ -84,7 +86,7 @@ function TableAssets({tableData}) {
             <MKBox display="flex" flexDirection="column" justifyContent="center" alignItems="flex-end" py={0.5} 
               px={1}>
               <MKTypography variant="h6" verticalAlign="middle" sx={{width:'max-content'}}>
-                {fnumber(balance,'en-US')} {key.contract_ticker_symbol}
+                {balance} {key.contract_ticker_symbol}
               </MKTypography>
               <MKTypography variant="button" color="text" verticalAlign="middle" sx={{width:'max-content'}}>
                 {fnumber(key.quote,'en-US', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol'})}
@@ -93,10 +95,12 @@ function TableAssets({tableData}) {
 
             <Zoom in={key.show}>
               <MKBox display={key.show?'flex':'none'} alignItems="flex-end" ml={1}>
-                <MKButton variant="gradient" color="secondary">
-                  <Icon sx={{mr:1}}>send</Icon>
-                  SEND
-                </MKButton>
+                <Link to="/transaction/send">
+                  <MKButton variant="gradient" color="secondary">
+                    <Icon sx={{mr:1}}>send</Icon>
+                    SEND
+                  </MKButton>
+                </Link>
               </MKBox>
             </Zoom>
 

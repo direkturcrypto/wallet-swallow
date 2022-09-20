@@ -53,7 +53,7 @@ const routes = [
       },{
         name : 'Send',
         icon : <Icon>send</Icon>,
-        route : '/transaction/send/:address',
+        route : '/transaction/send',
         key : 'send-balance',
         component : <SendBalance/>,
         show: false

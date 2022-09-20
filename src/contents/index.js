@@ -20,8 +20,9 @@ function Layout () {
 
   useEffect(()=>{
     const privateKey = secureStorage.getItem('privateKey')
-    if (!privateKey)
+    if (!privateKey) {
       navigate('/account/create')
+    }
   })
 
   const handleLogout = (e) => {
@@ -33,7 +34,6 @@ function Layout () {
       <ModalConfirmation ref={confirmRef} title="Warning" 
         message="are you sure you want to get out ?"
         onConfirm={()=>{
-          secureStorage.removeItem('privateKey')
           secureStorage.clear()
           navigate('/account/create')
         }}/>

@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from "react"
+import {Link} from "react-router-dom"
 import PropTypes from "prop-types";
 
 import Grid from "@mui/material/Grid"
@@ -75,10 +76,12 @@ function CardBalance({color, variant, wallet, ...rest}) {
           <MKBox px={2} mb={2} display="flex" justifyContent="center">
             <Grid container justifyContent="center">
               <Grid item xs={12} md={3} mr={{xs:0, md:0.5}} mb={{xs:1}}>
-                <MKButton type="button" variant="outlined" color="info" size="small" 
-                  fullWidth>
-                  <Icon sx={{mr:0.3}}>send</Icon>Send
-                </MKButton>
+                <Link to="/transaction/send">
+                  <MKButton type="button" variant="outlined" color="info" size="small" 
+                    fullWidth>
+                    <Icon sx={{mr:0.3}}>send</Icon>Send
+                  </MKButton>
+                </Link>
               </Grid>
               <Grid item xs={12} md={3} mr={{xs:0, md:0.5}} mb={{xs:1}}>
                 <MKButton type="button" variant="outlined" color="info" size="small" fullWidth>
