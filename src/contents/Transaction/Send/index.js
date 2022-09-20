@@ -117,15 +117,10 @@ function TransactionSend() {
     setSelectedNetwork(_selectedNetwork)
   }
 
-  const getBalance = ()=>{
-    const balance = parseInt(selectedSender?.balance)/ (10 ** selectedSender?.contract_decimals)
-    return balance
-  }
-
   const submitSend = () => {
     setIsLoading(true)
     try {
-
+      
     } catch (err) {
       setIsLoading(false)
       setIsAlert(true)
