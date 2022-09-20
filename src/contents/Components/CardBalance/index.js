@@ -111,24 +111,3 @@ CardBalance.defaultProps = {
 }
 
 export default CardBalance
-
-{/* <MKBox display="flex" 
-  flexDirection="column" 
-  alignItems="center" 
-  justifyContent="center"
-  bgColor="grey-100"
-  borderRadius="xl"
-  py={2}
-  my={1}
-  mx={2}>
-  
-  <MKTypography variant="body2">
-    Receiver
-  </MKTypography>
-  <MKTypography variant="body2" fontSize="small" 
-    textTransform="uppercase" 
-    textGradient
-    fontWeight="bold">
-    {address}
-  </MKTypography>
-</MKBox> */}
