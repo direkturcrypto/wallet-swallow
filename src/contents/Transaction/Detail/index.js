@@ -136,8 +136,7 @@ function TransactionDetail () {
                       justifyContent="center">
                       <MKTypography variant="button">Gas Price</MKTypography>
                       <MKTypography variant="button" fontWeight="bold">
-                      {parseInt(row?.gas_price)/1e18} {selectedNetwork?.symbol}
-                      {/* {ethers.BigNumber.from(row?.gas_price)} {selectedNetwork?.symbol} */}
+                      {ethers.utils.formatEther(row.gas_price)} {selectedNetwork?.symbol}
                       </MKTypography>
                     </MKBox>
                   </Grid>
@@ -148,7 +147,8 @@ function TransactionDetail () {
                       justifyContent="center">
                       <MKTypography variant="button">Gas Fee</MKTypography>
                       <MKTypography variant="button" fontWeight="bold">
-                      {parseInt(row?.fees_paid)/1e18} {selectedNetwork?.symbol}
+                      {/* {parseInt(row?.fees_paid)/1e18} {selectedNetwork?.symbol} */}
+                      {ethers.utils.formatEther(row.fees_paid)} {selectedNetwork?.symbol}
                       </MKTypography>
                     </MKBox>
                   </Grid>
@@ -190,7 +190,7 @@ function TransactionDetail () {
                           <MKBox display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
                             <MKTypography variant="button">Block Number</MKTypography>
                             <MKTypography variant="button" fontWeight="bold">
-                              {row?.block_height}
+                              {row?.block_height?.toLocaleString()}
                             </MKTypography>
                           </MKBox>
                           <MKBox ml={2} sx={{cursor:'pointer'}}>
@@ -229,7 +229,7 @@ function TransactionDetail () {
                         <MKTypography color="text" variant="button" fontSize="medium">Query Url</MKTypography>
                         <CopyToClipboard
                           onCopy={(text, result)=> notifRef.current.setShow(result,'Code successfully copied!')}  
-                          text={`${selectedNetwork?.explorerUrl}${row?.tx_hash}`} style={{marginLeft:'5px'}}>
+                          text={`${selectedNetwork?.explorerUrl}tx/${row?.tx_hash}`} style={{marginLeft:'5px'}}>
                           <Icon fontSize="medium">copy</Icon>
                         </CopyToClipboard>
                       </MKBox>

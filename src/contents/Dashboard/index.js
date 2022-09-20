@@ -17,6 +17,7 @@ import TableAssets from "contents/Components/TableAssets";
 
 // import Tokens from "config/token"
 import secureStorage from "libs/secureStorage";
+import {getItem, setItem} from "libs/session"
 import Provider from "libs/provider";
 
 import config from "config/core"
@@ -32,6 +33,7 @@ class Dashboard extends React.Component {
       isLoading:true,
       wallet:null,
       chainId:1666600000,
+      selectedNetwork:secureStorage.getItem('selectedNetwork'),
       address: "",
       balance : 0,
       assets: [],
@@ -60,23 +62,29 @@ class Dashboard extends React.Component {
     }
   }
 
-  initToken = (address) => {
+  initToken = async (address) => {
     this.setState({isLoading:true})
-    const url = `${config.endPoint}${this.state.chainId}/address/${address}/balances_v2/?key=${config.apiKey}`
-    
-    axios.get(url).then(res=>{
-      const result = res.data
-      const assets = result.data.items
+    try {
+      let assets = getItem('assets')
+      if (!assets) {
+        const url = `${config.endPoint}${this.state.selectedNetwork?.chainId}/address/${address}/balances_v2/?key=${config.apiKey}`
+        const res = await axios.get(url)
+        const result = res.data
+        assets = result.data.items
+        setItem('assets', assets)
+      }
+
       const balance = assets.reduce((prev, curr)=>{
         return prev+curr.quote
       }, 0)
+      
+      // console.log({assets, balance})
+      this.setState({assets, balance, isLoading: false})
 
-      this.setState({assets, balance, isLoading:false })
-    }).catch(err=>{
-      this.setState({
-        isLoading:false
-      })
-    })
+    } catch (err) {
+      console.log('ERR : ', err)
+      this.setState({isLoading:false})
+    }
   }
 
   render () {
