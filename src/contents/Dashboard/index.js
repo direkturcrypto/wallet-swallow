@@ -78,7 +78,6 @@ class Dashboard extends React.Component {
         return prev+curr.quote
       }, 0)
       
-      // console.log({assets, balance})
       this.setState({assets, balance, isLoading: false})
 
     } catch (err) {
