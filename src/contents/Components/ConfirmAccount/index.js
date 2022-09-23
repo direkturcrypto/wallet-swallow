@@ -25,14 +25,32 @@ import QRCode from 'qrcode.react';
 import View from "contents/Components/ViewScroll"
 
 export default class ConfirmAccount extends React.Component {
-  
+
   constructor(props) {
     super(props)
     this.state = {
       show : false,
-      privateKey : ''
+      privateKey : '',
+      mobileView:false
     }
     this.notifRef = React.createRef()
+  }
+
+  componentDidMount() {
+    // A function that sets the display state for the DefaultNavbarMobile.
+    function displayMobileNavbar() {
+      if (window.innerWidth < breakpoints.values.lg) {
+        setMobileView(true)
+      } else {
+        setMobileView(false)
+      }
+    }
+
+     window.addEventListener("resize", displayMobileNavbar);
+
+     displayMobileNavbar();
+ 
+     return () => window.removeEventListener("resize", displayMobileNavbar);
   }
 
   toggleModal = () => this.setShow(!this.state.show, '');
@@ -60,7 +78,7 @@ export default class ConfirmAccount extends React.Component {
         <Zoom in={this.state.show}>
           <MKBox
             position="relative"
-            width="500px"
+            width="100%"
             display="flex"
             flexDirection="column"
             borderRadius="xl"
@@ -70,7 +88,7 @@ export default class ConfirmAccount extends React.Component {
             <View>
               <Notification ref={this.notifRef}/>
               
-              <MKBox display="flex" alginitems="center" justifyContent="flex-end" p={2}>
+              <MKBox display="flex" alginitems="center" justifyContent="center" p={2}>
                 <MKTypography variant="h5">Attention !</MKTypography>
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={this.toggleModal} />
               </MKBox>
