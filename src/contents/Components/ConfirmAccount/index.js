@@ -24,6 +24,9 @@ import QRCode from 'qrcode.react';
 
 import View from "contents/Components/ViewScroll"
 
+// Material Kit 2 PRO React base styles
+import breakpoints from "assets/theme/base/breakpoints";
+
 export default class ConfirmAccount extends React.Component {
 
   constructor(props) {
@@ -40,17 +43,17 @@ export default class ConfirmAccount extends React.Component {
     // A function that sets the display state for the DefaultNavbarMobile.
     function displayMobileNavbar() {
       if (window.innerWidth < breakpoints.values.lg) {
-        setMobileView(true)
+        this.setState({mobileView:true})
       } else {
-        setMobileView(false)
+        this.setState({mobileView:false})
       }
     }
 
-     window.addEventListener("resize", displayMobileNavbar);
+    window.addEventListener("resize", displayMobileNavbar);
 
-     displayMobileNavbar();
- 
-     return () => window.removeEventListener("resize", displayMobileNavbar);
+    displayMobileNavbar();
+
+    return () => window.removeEventListener("resize", displayMobileNavbar);
   }
 
   toggleModal = () => this.setShow(!this.state.show, '');
