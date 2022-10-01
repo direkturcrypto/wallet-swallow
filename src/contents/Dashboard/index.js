@@ -41,13 +41,13 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount () {
-    this.initProvider()
+    const privateKey = secureStorage.getItem('privateKey')
+    privateKey&& this.initProvider(privateKey)
   }
 
   initProvider = async () => {
+    const selectedNetwork = secureStorage.getItem('selectedNetwork')
     try {
-      const privateKey = secureStorage.getItem('privateKey')
-      const selectedNetwork = secureStorage.getItem('selectedNetwork')
       const provider = new Provider(privateKey, selectedNetwork)
       const wallet = provider.wallet
       

@@ -40,12 +40,13 @@ export default class ConfirmAccount extends React.Component {
   }
 
   componentDidMount() {
+    const self = this
     // A function that sets the display state for the DefaultNavbarMobile.
     function displayMobileNavbar() {
       if (window.innerWidth < breakpoints.values.lg) {
-        this.setState({mobileView:true})
+        self.setState({mobileView:true})
       } else {
-        this.setState({mobileView:false})
+        self.setState({mobileView:false})
       }
     }
 
@@ -81,7 +82,7 @@ export default class ConfirmAccount extends React.Component {
         <Zoom in={this.state.show}>
           <MKBox
             position="relative"
-            width="100%"
+            width={this.state.mobileView?'100%':'50%'}
             display="flex"
             flexDirection="column"
             borderRadius="xl"
@@ -105,7 +106,7 @@ export default class ConfirmAccount extends React.Component {
                       <QRCode
                         id="myPrivatekey"
                         value={this.state.privateKey}
-                        size={300}
+                        size={this.state.mobileView? 100:300}
                         level={"L"}/>
                     </MKBox>
                     <MKInput 

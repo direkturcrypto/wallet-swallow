@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from "react"
-import {useNavigate, useParams, useLocation} from "react-router-dom"
+import {useParams} from "react-router-dom"
 
 import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid"
@@ -7,33 +7,25 @@ import Card from "@mui/material/Card"
 import Icon from "@mui/material/Icon";
 import Divider from "@mui/material/Divider"
 import { makeStyles } from '@mui/styles';
-import { styled } from '@mui/material/styles'
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import MKBox from "components/MKBox"
-import MKButton from "components/MKButton"
-import MKBadge from "components/MKBadge"
 import MKTypography from "components/MKTypography"
 
 import Notification from "contents/Components/Notification";
 
-import {fnumber, formatDateTime} from "libs/helper"
+import {formatDateTime} from "libs/helper"
 import secureStorage from "libs/secureStorage"
 
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from 'qrcode.react';
 import {ethers} from "ethers"
 
-const useStyles = makeStyles({})
-
 function TransactionDetail () {
-  // const classes = useStyles()
   const notifRef= useRef()
-  const navigate = useNavigate()
   const params = useParams()
-  // const location = useLocation()
 
   const [hash, setHash] = useState("")
   const [row, setRow] = useState(null)
