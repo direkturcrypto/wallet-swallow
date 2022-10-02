@@ -60,7 +60,6 @@ function Dashboard() {
   }
 
   const initToken = async  (addr, reload)=>{
-    console.log({reload})
     setIsLoading(true)
     try {
       let _assets = getItem('assets')
@@ -80,7 +79,11 @@ function Dashboard() {
       setBalance(_balance)
       setIsLoading(false)
     } catch (e){
-      console.log(e)
+      if (e.response) {
+        const errMessage = e.response.data.error_message
+        alert(errMessage)
+      }
+      
       setIsLoading(false)
     }
   }

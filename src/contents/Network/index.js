@@ -117,8 +117,22 @@ class Network extends React.Component {
       symbol:'',
       rpcUrl:'',
       explorerUrl:'',
-      key:null
+      key:null,
+      action:'add',
+      disabledButton:true
     })
+  }
+
+  deleteNetwork = () => {
+    const inputConfirm = confirm('Are you sure you want to delete this network?')
+    if (inputConfirm) {
+      const networks = secureStorage.getItem('networks')
+      console.log(networks)
+      networks.splice(this.state.key, 1)
+      secureStorage.setItem('networks', networks)
+      this.resetForm()
+      this.iniData()
+    }
   }
 
   handleSubmit = () => {
@@ -176,10 +190,6 @@ class Network extends React.Component {
     }
   }
 
-  updateNet = () => {
-
-  }
-
   selectItem = (item, key) => {
     this.setState({
       name:item.name,
@@ -208,6 +218,7 @@ class Network extends React.Component {
                     backgroundColor:'#eee !important'
                   }
                 }}
+                divider
               >
                 <ListItemButton>
                   <ListItemIcon>
@@ -293,14 +304,43 @@ class Network extends React.Component {
                         value={this.state.explorerUrl}
                         onChange={this.handleChange}/>
                     </MKBox>
-
-                    <MKBox mt={4} mb={1}>
-                      <MKButton variant="gradient" color="info"
-                        disabled={this.state.disabledButton} 
-                        onClick={this.handleSubmit}
-                        fullWidth>
-                        Submit
-                      </MKButton>
+                    
+                    <MKBox wdith="100%" display="flex" 
+                      flexDirection ={{xs:'column', md:'row'}}
+                      justifyContent={{xs:'flex-end'}}
+                      mt={4} 
+                      mb={1}
+                    >
+                      <MKBox mr={{xs:0,md:1}} mb={{xs:1,md:0}} justifyContent="flex-start">
+                       <MKButton variant="gradient" color="secondary"
+                          fullWidth
+                          onClick={this.resetForm}
+                        >
+                          Clear
+                        </MKButton>
+                      </MKBox>
+                      <MKBox mr={{xs:0,md:1}} mb={{xs:1,md:0}}>
+                        <MKButton variant="gradient" 
+                          color="error"
+                          fullWidth
+                          disabled={
+                            this.state.selectedNetwork&&this.state.selectedNetwork.chainId===this.state.chainId||
+                            this.state.key===null
+                            ?true:false
+                          }
+                          onClick={this.deleteNetwork}
+                        >
+                          Delete
+                        </MKButton>
+                      </MKBox>
+                      <MKBox>
+                        <MKButton variant="gradient" color="info"
+                          disabled={this.state.disabledButton} 
+                          onClick={this.handleSubmit}
+                          fullWidth>
+                          Submit
+                        </MKButton>
+                      </MKBox>
                     </MKBox>
                   </MKBox>
 

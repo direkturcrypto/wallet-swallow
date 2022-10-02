@@ -65,7 +65,8 @@ function DropdownNetwork ({updateNetwork}) {
         {networks.map((item, i)=> (
           <MenuItem 
             selected={item.chainId===selectedNetwork.chainId} key={i} 
-            onClick={()=> chooseNetwork(item)}>
+            onClick={()=> chooseNetwork(item)}
+          >
             {item.name}
           </MenuItem>
         ))}
