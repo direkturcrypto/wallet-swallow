@@ -83,7 +83,7 @@ function DropdownNetwork ({updateNetwork}) {
 }
 
 DropdownNetwork.prototype = {
-  updateNetwork: PropTypes.func
+  updateNetwork: PropTypes.func,
 }
 
 export default DropdownNetwork

@@ -25,6 +25,7 @@ function CardBalance({color, variant, wallet, ...rest}) {
   const [privateKey, setPrivateKey] = useState("")
 
   useEffect(()=>{
+    console.log('[INIT BALANCE]')
     initData()
     setBalance(wallet.balance)
     setAddress(wallet.address)

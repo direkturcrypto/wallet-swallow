@@ -39,7 +39,7 @@ function Dashboard() {
   }, [])
 
   useEffect(()=>{
-    console.log('[UPDATE SWITCH NETWORK]')
+    // console.log('[UPDATE SWITCH NETWORK]')
     const privateKey = secureStorage.getItem('privateKey')
     initProvider(privateKey, true)
   },[selectedNetwork])
@@ -83,7 +83,7 @@ function Dashboard() {
         const errMessage = e.response.data.error_message
         alert(errMessage)
       }
-      
+
       setIsLoading(false)
     }
   }
