@@ -101,6 +101,9 @@ class QRCodeScanner extends React.Component {
         </SCloseButton>
         <SQRCodeScannerWrapper>
           <QrReader
+            constraints={{
+              facingMode: 'environment'
+            }}
             delay={this.state.delay}
             onError={this.handleError}
             onScan={this.handleScan}
