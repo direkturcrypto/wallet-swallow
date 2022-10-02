@@ -44,7 +44,6 @@ function TableAssets({tableData}) {
   },[tableData])
 
   const renderRows = assets.map((key,idx)=>{
-    console.log({key})
     const rowKey = `row-${idx}`
     const balance = parseInt(key.balance)/ (10 ** key.contract_decimals)
 

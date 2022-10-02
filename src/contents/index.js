@@ -13,10 +13,12 @@ import routes from "routes";
 import secureStorage from "libs/secureStorage"
 
 import ModalConfirmation from "contents/Components/Confirmation"
+import DropdownNetwork from "./Components/DropdownNetwork";
 
 function Layout () {
   const navigate = useNavigate()
   const confirmRef = useRef()
+  const [selectedNetwork, setSelectedNetwork] = useState(secureStorage.getItem('selectedNetwork'))
 
   useEffect(()=>{
     const privateKey = secureStorage.getItem('privateKey')
@@ -27,6 +29,10 @@ function Layout () {
 
   const handleLogout = (e) => {
     confirmRef.current.setShow(true)
+  }
+
+  const updateNetwork = () =>{
+    console.log('[UPDATE]')
   }
   
   return (
@@ -47,12 +53,13 @@ function Layout () {
             label: "logout",
             color: "error",
           }}
+          propNetwork={<DropdownNetwork updateNetwork={setSelectedNetwork}/>}
           routes={routes}
           transparent
           relative
           light/>
       </MKBox>
-      <Outlet />
+      <Outlet context={[selectedNetwork, setSelectedNetwork]}/>
     </>
   )
 }
