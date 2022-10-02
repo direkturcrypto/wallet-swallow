@@ -31,6 +31,7 @@ import {fnumber, formatDateTime} from "libs/helper"
 
 import config from "config/core"
 import axios from "axios"
+import Provider from "libs/provider";
 
 import trx from "config/transaction"
 
@@ -66,6 +67,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 class TransactionHistory extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       rowsPerPage: 15,
 			currentPage: 1,
@@ -73,7 +75,7 @@ class TransactionHistory extends React.Component {
 			totalData: 0,
       rows : [],
 
-      isLoading : false,
+      isLoading : true,
 
       redirect: null,
       params : null,
@@ -89,11 +91,39 @@ class TransactionHistory extends React.Component {
   }
 
   iniData (params) {
+    const privateKey = secureStorage.getItem('privateKey')
     const selectedNetwork = secureStorage.getItem('selectedNetwork')
-    this.setState({
-      selectedNetwork,
-      rows:trx.data.items
-    })
+    try {
+      const provider = new Provider(privateKey, selectedNetwork)
+      const wallet = provider.wallet
+
+      const currentPage = this.state.currentPage?this.state.currentPage:1
+      const url = `${config.endPoint}${selectedNetwork.chainId}/address/${wallet.address}/transactions_v2/?key=${config.apiKey}`
+      // &page-size=${this.state.rowsPerPage}&page-number=${currentPage}
+      
+      axios.get(url)
+        .then(res=>{
+          const response = res.data
+          const items = response.data?response.data.items:[]
+
+          this.setState({
+            selectedNetwork,
+            rows:items,
+            isLoading:false,
+          })
+        })
+        .catch(err=>{
+          console.log(err)
+          this.setState({isLoading:false})
+        })
+
+    } catch (e) {
+      this.setState({
+        rows:[],
+        selectedNetwork,
+        isLoading:false,
+      })
+    }
   }
 
   renderBody = () => this.state.rows.map((item, index)=> {
@@ -195,7 +225,7 @@ class TransactionHistory extends React.Component {
                 </MKBox>
               </Grid>
 
-              <Grid item xl={12} lg={12} md={12} sm={12} xs={12} mt={2}>
+              {/* <Grid item xl={12} lg={12} md={12} sm={12} xs={12} mt={2}>
 								<MKBox width="100%">
 									<Pagination
 										totalButton={3}
@@ -215,7 +245,7 @@ class TransactionHistory extends React.Component {
 											this.iniData({rowsPerPage:value,currentPage:1})
 										}}/>
 								</MKBox>
-							</Grid>
+							</Grid> */}
 
             </Grid>
           </Card>

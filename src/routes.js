@@ -18,7 +18,6 @@ import TransactionHistory from "contents/Transaction/History"
 import TransactionDetail from "contents/Transaction/Detail"
 import SendBalance from "contents/Transaction/Send"
 import WC from "contents/WalletConnect";
-import AddNetwork from "contents/AddNetwork";
 import Network from "contents/Network";
 
 const routes = [

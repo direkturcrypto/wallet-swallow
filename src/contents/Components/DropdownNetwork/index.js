@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from "prop-types";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 // @mui material components
 import Container from "@mui/material/Container";
@@ -18,6 +18,7 @@ import secureStorage from 'libs/secureStorage';
 
 function DropdownNetwork ({updateNetwork}) {
   const navigate = useNavigate()
+  const location = useLocation()
   const [networks, setNetworks] = useState([])
   const [selectedNetwork, setSelectedNetwork] = useState(null)
   const [dropdown, setDropdown] = useState(null);
@@ -34,13 +35,13 @@ function DropdownNetwork ({updateNetwork}) {
     }
     setDropdown(null)
   }
-
-  useEffect(()=> {
+  
+  useEffect(()=>{
     const _networks = secureStorage.getItem('networks')
     const _selectedNetwork = secureStorage.getItem('selectedNetwork')
     setNetworks(_networks)
     setSelectedNetwork(_selectedNetwork)
-  }, [])
+  }, [location.pathname])
 
   // Styles
   const iconStyles = {
