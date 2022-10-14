@@ -170,7 +170,7 @@ class TransactionHistory extends React.Component {
             <Grid container justifyContent="center">
               <Grid item xs={12} md={12} sm={12} lg={12}>
                 <Grid container justifyContent="flex-start">
-                  <Grid item xs={2} md={2}>
+                  <Grid item xs={12} md={2}>
                     <MKBox color="rgba(0,0,0,.6)" bgColor="#e8e8e8" borderRadius="5px"
                       shadow="lg"
                       textAlign="center"

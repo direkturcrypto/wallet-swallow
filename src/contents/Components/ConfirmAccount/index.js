@@ -24,15 +24,37 @@ import QRCode from 'qrcode.react';
 
 import View from "contents/Components/ViewScroll"
 
+// Material Kit 2 PRO React base styles
+import breakpoints from "assets/theme/base/breakpoints";
+
 export default class ConfirmAccount extends React.Component {
-  
+
   constructor(props) {
     super(props)
     this.state = {
       show : false,
-      privateKey : ''
+      privateKey : '',
+      mobileView:false
     }
     this.notifRef = React.createRef()
+  }
+
+  componentDidMount() {
+    const self = this
+    // A function that sets the display state for the DefaultNavbarMobile.
+    function displayMobileNavbar() {
+      if (window.innerWidth < breakpoints.values.lg) {
+        self.setState({mobileView:true})
+      } else {
+        self.setState({mobileView:false})
+      }
+    }
+
+    window.addEventListener("resize", displayMobileNavbar);
+
+    displayMobileNavbar();
+
+    return () => window.removeEventListener("resize", displayMobileNavbar);
   }
 
   toggleModal = () => this.setShow(!this.state.show, '');
@@ -60,7 +82,7 @@ export default class ConfirmAccount extends React.Component {
         <Zoom in={this.state.show}>
           <MKBox
             position="relative"
-            width="500px"
+            width={this.state.mobileView?'100%':'50%'}
             display="flex"
             flexDirection="column"
             borderRadius="xl"
@@ -70,7 +92,7 @@ export default class ConfirmAccount extends React.Component {
             <View>
               <Notification ref={this.notifRef}/>
               
-              <MKBox display="flex" alginitems="center" justifyContent="flex-end" p={2}>
+              <MKBox display="flex" alginitems="center" justifyContent="center" p={2}>
                 <MKTypography variant="h5">Attention !</MKTypography>
                 <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={this.toggleModal} />
               </MKBox>
@@ -84,7 +106,7 @@ export default class ConfirmAccount extends React.Component {
                       <QRCode
                         id="myPrivatekey"
                         value={this.state.privateKey}
-                        size={300}
+                        size={this.state.mobileView? 100:300}
                         level={"L"}/>
                     </MKBox>
                     <MKInput 

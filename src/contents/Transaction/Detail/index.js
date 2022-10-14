@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from "react"
-import {useNavigate, useParams, useLocation} from "react-router-dom"
+import {useParams} from "react-router-dom"
 
 import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid"
@@ -7,33 +7,25 @@ import Card from "@mui/material/Card"
 import Icon from "@mui/material/Icon";
 import Divider from "@mui/material/Divider"
 import { makeStyles } from '@mui/styles';
-import { styled } from '@mui/material/styles'
 
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import MKBox from "components/MKBox"
-import MKButton from "components/MKButton"
-import MKBadge from "components/MKBadge"
 import MKTypography from "components/MKTypography"
 
 import Notification from "contents/Components/Notification";
 
-import {fnumber, formatDateTime} from "libs/helper"
+import {formatDateTime} from "libs/helper"
 import secureStorage from "libs/secureStorage"
 
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from 'qrcode.react';
 import {ethers} from "ethers"
 
-const useStyles = makeStyles({})
-
 function TransactionDetail () {
-  // const classes = useStyles()
   const notifRef= useRef()
-  const navigate = useNavigate()
   const params = useParams()
-  // const location = useLocation()
 
   const [hash, setHash] = useState("")
   const [row, setRow] = useState(null)
@@ -65,10 +57,14 @@ function TransactionDetail () {
       </Grid>
       {
         row&&
-        <Grid container spacing={2} justifyContent="center">
+        <Grid container justifyContent="center">
           <Grid item xs={12} md={9} sm={12} lg={9}>
             <MKBox wdith="100%" component="section" pt={4} mb={3}>
-              <Card sx={{padding:'25px'}}>
+              <Card 
+                sx={{
+                  padding:'25px',
+                  marginBottom : '40px'
+                }}>
                 <Grid container justifyContent="center">
                   <Grid item xs={12} md={12}>
                     <MKBox wdith="100%" display="flex" flexDirection="column" alignItems="center" justifyContent="center">
@@ -98,7 +94,7 @@ function TransactionDetail () {
                       <MKBox display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
                         <MKTypography variant="button">Payer</MKTypography>
                         <MKTypography variant="button" fontWeight="bold">
-                          {row?.from_address}
+                          {`${row?.from_address.substring(0,30)}...`}
                         </MKTypography>
                       </MKBox>
                       <MKBox ml={2} sx={{cursor:'pointer'}}>
@@ -117,7 +113,7 @@ function TransactionDetail () {
                       <MKBox display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
                         <MKTypography variant="button">Payee</MKTypography>
                         <MKTypography variant="button" fontWeight="bold">
-                          {row?.to_address}
+                          {`${row?.to_address.substring(0,30)}...`}
                         </MKTypography>
                       </MKBox>
                       <MKBox ml={2} sx={{cursor:'pointer'}}>
@@ -162,16 +158,8 @@ function TransactionDetail () {
                           alignItems="flex-end">
                           <MKBox display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
                             <MKTypography variant="button">Transaction Hash</MKTypography>
-                            <MKTypography variant="button"
-                              sx={{
-                                overflow:'hidden',
-                                textOverflow:'ellipsis',
-                                whiteSpace: "nowrap",
-                                width:'450px',
-                                cursor:'pointer'
-                              }} 
-                              fontWeight="bold">
-                              {`${row?.tx_hash.substring(0,45)}...${row?.tx_hash.substring(row?.tx_hash.length-5, row?.tx_hash.length)}`}
+                            <MKTypography variant="button" fontWeight="bold">
+                              {`${row?.tx_hash.substring(0,30)}...`}
                             </MKTypography>
                           </MKBox>
                           <MKBox ml={2} sx={{cursor:'pointer'}}>
@@ -216,7 +204,7 @@ function TransactionDetail () {
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} md={4}>
+                  <Grid item xs={12} md={4} mt={{xs:2}}>
                     <MKBox width="100%" height="100%" display="flex" flexDirection="column" 
                       alignItems="center" 
                       justifyContent="center">

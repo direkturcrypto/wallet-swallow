@@ -17,6 +17,9 @@ import MKAlert from "components/MKAlert"
 import MKAvatar from "components/MKAvatar"
 import MKTypography from "components/MKTypography"
 
+// Material Kit 2 PRO React base styles
+import breakpoints from "assets/theme/base/breakpoints";
+
 import secureStorage from "libs/secureStorage"
 import {getItem, setItem} from "libs/session"
 import {fnumber} from "libs/helper"
@@ -85,6 +88,8 @@ function TransactionSend() {
   const [errMessage, setErrMessage] = useState('')
   const [isAlert, setIsAlert] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const [mobileView, setMobileView] = useState(false);
   
   useEffect(()=>{
     const privateKey = secureStorage.getItem('privateKey')
@@ -94,6 +99,27 @@ function TransactionSend() {
     }
 
     initAsset()
+
+    // A function that sets the display state for the DefaultNavbarMobile.
+    function displayMobileNavbar() {
+      if (window.innerWidth < breakpoints.values.lg) {
+        setMobileView(true)
+      } else {
+        setMobileView(false)
+      }
+    }
+
+    /** 
+     The event listener that's calling the displayMobileNavbar function when 
+     resizing the window.
+    */
+     window.addEventListener("resize", displayMobileNavbar);
+
+     // Call the displayMobileNavbar function to set the state with the initial value.
+     displayMobileNavbar();
+ 
+     // Remove event listener on cleanup
+     return () => window.removeEventListener("resize", displayMobileNavbar);
   }, [])
 
   const initAsset = async () => {

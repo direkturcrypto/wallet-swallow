@@ -41,13 +41,13 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount () {
-    this.initProvider()
+    const privateKey = secureStorage.getItem('privateKey')
+    privateKey&& this.initProvider(privateKey)
   }
 
   initProvider = async () => {
+    const selectedNetwork = secureStorage.getItem('selectedNetwork')
     try {
-      const privateKey = secureStorage.getItem('privateKey')
-      const selectedNetwork = secureStorage.getItem('selectedNetwork')
       const provider = new Provider(privateKey, selectedNetwork)
       const wallet = provider.wallet
       
@@ -78,7 +78,6 @@ class Dashboard extends React.Component {
         return prev+curr.quote
       }, 0)
       
-      // console.log({assets, balance})
       this.setState({assets, balance, isLoading: false})
 
     } catch (err) {
