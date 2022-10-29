@@ -44,7 +44,7 @@ import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMob
 import breakpoints from "assets/theme/base/breakpoints";
 
 
-function DefaultNavbar({ brand, routes, transparent, light, action, sticky, relative, center }) {
+function DefaultNavbar({ brand, routes, transparent, light, action, sticky, relative, center, propNetwork }) {
   const [dropdown, setDropdown] = useState("");
   const [dropdownEl, setDropdownEl] = useState("");
   const [dropdownName, setDropdownName] = useState("");
@@ -493,13 +493,16 @@ function DefaultNavbar({ brand, routes, transparent, light, action, sticky, rela
           >
             {renderNavbarItems}
           </MKBox>
+          <MKBox ml={{xs:'auto', lg:0}} mr={{xs:'auto', lg:1}}>
+            {propNetwork&&propNetwork}
+          </MKBox>
           <MKBox ml={{ xs: "auto", lg: 0 }}>
             {action &&
               (action.type === "internal" ? (
                 <MKButton
                   component={Link}
                   onClick={action.onClick}
-                  to={action.route}
+                  // to={action.route}
                   variant={
                     action.color === "white" || action.color === "default"
                       ? "contained"

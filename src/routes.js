@@ -18,6 +18,7 @@ import TransactionHistory from "contents/Transaction/History"
 import TransactionDetail from "contents/Transaction/Detail"
 import SendBalance from "contents/Transaction/Send"
 import WC from "contents/WalletConnect";
+import Network from "contents/Network";
 
 const routes = [
   {
@@ -28,6 +29,14 @@ const routes = [
     component : <Dashboard/>,
     key:'wallet',
     show: true
+  },{
+    name: "List Network",
+    icon: <Icon>network</Icon>,
+    route:"/network",
+    index:true,
+    component : <Network/>,
+    key:'network',
+    show: false
   },{
     name:'transaction',
     icon: <Icon>shopping-cart</Icon>,
@@ -59,7 +68,7 @@ const routes = [
         show: false
       }
     ]
-  }, {
+  },{
     name: "WalletConnect",
     icon: <Icon>wallet</Icon>,
     route:"/dapps",
