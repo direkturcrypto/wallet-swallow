@@ -95,7 +95,7 @@ function TransactionSend() {
     const privateKey = secureStorage.getItem('privateKey')
     if (!privateKey) {
       navigate('/account/create')
-      secureStorage.clear()
+      secureStorage.removeItem('privateKey')
     }
 
     initAsset()

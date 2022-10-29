@@ -40,7 +40,6 @@ function Layout () {
       <ModalConfirmation ref={confirmRef} title="Warning" 
         message="are you sure you want to get out ?"
         onConfirm={()=>{
-          // secureStorage.clear()
           secureStorage.removeItem('privateKey')
           navigate('/account/create')
         }}/>
