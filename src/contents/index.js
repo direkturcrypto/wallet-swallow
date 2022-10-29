@@ -30,10 +30,6 @@ function Layout () {
   const handleLogout = (e) => {
     confirmRef.current.setShow(true)
   }
-
-  const updateNetwork = () =>{
-    console.log('[UPDATE]')
-  }
   
   return (
     <>
