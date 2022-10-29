@@ -6,7 +6,7 @@ import MKButton from "components/MKButton";
 import WCLogo from "assets/images/walletconnect-logo.png";
 import WalletConnect from "@walletconnect/client";
 import secureStorage from "libs/secureStorage";
-import {ethers} from "ethers"
+import {ethers, utils} from "ethers"
 import network from "config/network"
 import ConnectedApp from "./connectedApp"
 import QRCodeScanner from "./qrcodescaner"
@@ -48,14 +48,14 @@ function WC() {
     }
 
     const pasteQR = () => {
-			try {
-        let dataQr = prompt("Paste Your QRCode")
-        if (dataQr) {
-            connectDapps(dataQr)
+		try {
+            let dataQr = prompt("Paste Your QRCode")
+            if (dataQr) {
+                connectDapps(dataQr)
+            }
+        } catch (err) {
+            console.log(err)
         }
-			} catch (err) {
-				console.log(err)
-			}
     }
 
     const connectDapps = async (data) => {
@@ -107,6 +107,8 @@ function WC() {
             console.log("call_request", err, payload)
             if (payload.method == "eth_sendTransaction") {
                 setWCTransaction(payload)
+            } else if (payload.method == "personal_sign") {
+                setWCTransaction(payload)
             }
         })
     }
@@ -132,66 +134,66 @@ function WC() {
         document.title = `MyWallet`      
     }
 
-		const onQRCodeValidate = (data) => {
-			const res = {
-				error: null,
-				result: null,
-			}
-			try {
-				res.result = data
-			} catch (err) {
-				res.error = error
-			}
-			return res
-		}
+    const onQRCodeValidate = (data) => {
+        const res = {
+            error: null,
+            result: null,
+        }
+        try {
+            res.result = data
+        } catch (err) {
+            res.error = error
+        }
+        return res
+    }
 
-		const onQRCodeScan = (data) => {
-			const uri = typeof data === "string" ? data : "";
-			if (uri) {
-				connectDapps(uri)
-				setScanner(false)
-			}
-		}
+    const onQRCodeScan = (data) => {
+        const uri = typeof data === "string" ? data : "";
+        if (uri) {
+            connectDapps(uri)
+            setScanner(false)
+        }
+    }
 
     return (
-			<>
+        <>
         <MKBox>
-					{
-						wcStatus != null ? <ConnectedApp
-							wcTransaction={wcTransaction}
-							wcStatus={wcStatus}
-							wcDisconnect={() => disconnectApp()}
-							connector={connector}
-							wallet={wallet}
-							onUpdateTrx={onUpdateTrx}/> : (
-							<Grid container justifyContent={"center"} textAlign={"center"} spacing={"3"}>
-									<Grid item md={6} xs={12} lg={6} sm={12}>
-											<MKBox p={2}>
-													<Card>
-															<MKBox p={2}>
-																	<p>Connect Dapps Using Wallet Connect</p>
-																	<hr/>
-																	<br/>
-																	<img src={WCLogo} width={300}/>
-																	<br/>
-																	<h2>WalletConnect</h2>
-																	<p>Open Protocol for Connecting Wallets to Dapps</p>
-																	<br/>
+                {
+                    wcStatus != null ? <ConnectedApp
+                        wcTransaction={wcTransaction}
+                        wcStatus={wcStatus}
+                        wcDisconnect={() => disconnectApp()}
+                        connector={connector}
+                        wallet={wallet}
+                        onUpdateTrx={onUpdateTrx}/> : (
+                        <Grid container justifyContent={"center"} textAlign={"center"} spacing={"3"}>
+                            <Grid item md={6} xs={12} lg={6} sm={12}>
+                                <MKBox p={2}>
+                                    <Card>
+                                        <MKBox p={2}>
+                                                <p>Connect Dapps Using Wallet Connect</p>
+                                                <hr/>
+                                                <br/>
+                                                <img src={WCLogo} width={300}/>
+                                                <br/>
+                                                <h2>WalletConnect</h2>
+                                                <p>Open Protocol for Connecting Wallets to Dapps</p>
+                                                <br/>
 
-																	<MKButton color="secondary" size="large" variant="gradient" fullWidth onClick={() => pasteQR()}>
-																			Paste QR
-																	</MKButton>
-																	<small> Or </small>
-																	<MKButton color="info" size="large" variant="gradient" fullWidth onClick={()=> setScanner(true)}>
-																			Scan QR
-																	</MKButton>
-															</MKBox>
-													</Card>
-											</MKBox>
-									</Grid>
-							</Grid>
-						)
-					}
+                                                <MKButton color="secondary" size="large" variant="gradient" fullWidth onClick={() => pasteQR()}>
+                                                        Paste QR
+                                                </MKButton>
+                                                <small> Or </small>
+                                                <MKButton color="info" size="large" variant="gradient" fullWidth onClick={()=> setScanner(true)}>
+                                                        Scan QR
+                                                </MKButton>
+                                        </MKBox>
+                                    </Card>
+                                </MKBox>
+                            </Grid>
+                        </Grid>
+                    )
+                }
 				</MKBox>
 				{scanner && (
 					<QRCodeScanner

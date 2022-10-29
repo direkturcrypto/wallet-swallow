@@ -4,13 +4,7 @@ import Card from "@mui/material/Card"
 import MKBox from "components/MKBox"
 import MKButton from "components/MKButton";
 import MKInput from "components/MKInput"
-import WCLogo from "assets/images/walletconnect-logo.png";
-import secureStorage from "libs/secureStorage";
-import {ethers} from "ethers"
-import network from "config/network"
-import Input from 'assets/theme/components/form/input';
-const RELAYER_API_KEY = "AvVzmzdois8MAfa278UAPLV8q6u8M7kQ";
-const RELAYER_SECRET_KEY = "5aYB7JXLzhk4yYsn41YCDwgCUGnAVxwXwVBEB3h4DAumKdwekUG8yy4sdYJkBRtZ";
+import {ethers, utils} from "ethers"
 
 function SignTransaction({data, wcStatus, connector, wallet, updateData}) {
     const [gwei, setGwei] = useState(100)
@@ -46,27 +40,87 @@ function SignTransaction({data, wcStatus, connector, wallet, updateData}) {
     const onApprove = async () => {
         setConfirming(true)
         let payload = data.params[0]
-        const createReceipt = await wallet.signTransaction({
-            from: payload.from,
-            to: payload.to,
-            data: payload.data
-        }, {
-            gasLimit: gas,
-            gasPrice: parseInt(gwei) * 1e9
-        });
-        console.log("PENERIMA", createReceipt)
-        // await createReceipt.wait();
-        // connector.approveRequest({
-        //     id: data.id,
-        //     jsonrpc: data.jsonrpc,
-        //     result: createReceipt.hash
-        // })
-        setConfirming(false)
-        updateData(null)
+        if (data.method == 'eth_sendTransaction') {
+            const createReceipt = await wallet.signTransaction({
+                from: payload.from,
+                to: payload.to,
+                data: payload.data
+            }, {
+                gasLimit: gas,
+                gasPrice: parseInt(gwei) * 1e9
+            });
+            await createReceipt.wait();
+            connector.approveRequest({
+                id: data.id,
+                jsonrpc: data.jsonrpc,
+                result: createReceipt.hash
+            })
+            console.log("PENERIMA", createReceipt)
+            setConfirming(false)
+            updateData(null)    
+        } else if (data.method == 'personal_sign') {
+            let decoded = utils.toUtf8String(utils.arrayify(payload))
+            const signed = await wallet.signMessage(decoded)
+            
+            connector.approveRequest({
+                id: data.id,
+                jsonrpc: data.jsonrpc,
+                result: signed
+            })
+            setConfirming(false)
+            updateData(null)
+        }
+    }
+
+    const signMessageComponent = () => {
+        return (
+            <Card>
+                <MKBox p={2}>
+                    <p>Sign Messages</p>
+                    <hr/>
+                    <br/>
+                    <Grid container>
+                        <Grid item md={12}>
+                            <Table>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>
+                                            <small>Account</small>
+                                        </TableCell>
+                                        <TableCell>
+                                            <small>{data.params[1]}</small>
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>
+                                            <small>Message</small>
+                                        </TableCell>
+                                        <TableCell>
+                                            <small>
+                                                {utils.toUtf8String(utils.arrayify(data.params[0]))}                                                
+                                            </small>
+                                            {/* <MKInput label="Data" fullWidth id="xdata" disabled value={utils.toUtf8String(utils.arrayify(data.params[0]))}></MKInput> */}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </Grid>
+                    </Grid>
+                    <br/>
+                    <MKButton color="light" size="large" variant="gradient" fullWidth onClick={onReject}>
+                        REJECT
+                    </MKButton>
+                    <br/><br/>
+                    <MKButton color="info" size="large" variant="gradient" fullWidth onClick={onApprove} disabled={confirming}>
+                        {confirming ? "SIGNING...." : "SIGN"}
+                    </MKButton>
+                </MKBox>
+            </Card>
+        )
     }
 
     return (
-        <Card>
+        data.method == "personal_sign" ? signMessageComponent() : <Card>
             <MKBox p={2}>
                 <p>Confirmation Transaction</p>
                 <hr/>
