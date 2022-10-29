@@ -35,16 +35,16 @@ class App extends React.Component {
   componentDidMount () {
   }
 
-  sessionCheck() {
-    const account = secureStorage.getItem('account')
-    if (!account)
-      this.logout()
-  }
+  // sessionCheck() {
+  //   const account = secureStorage.getItem('account')
+  //   if (!account)
+  //     this.logout()
+  // }
 
-  logout () {
-    secureStorage.removeItem('account')
-    window.location.reload();
-  }
+  // logout () {
+  //   secureStorage.removeItem('account')
+  //   window.location.reload();
+  // }
 
   getRoutes = (allRoutes) => {
     const index = []
