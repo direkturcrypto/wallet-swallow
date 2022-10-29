@@ -33,6 +33,7 @@
     "axios": "^0.27.2",
     "chroma-js": "2.1.2",
     "crypto-js": "4.1.1",
+    "defender-relay-client": "^1.31.1",
     "ethers": "^5.7.0",
     "flatpickr": "4.6.9",
     "lodash": "^4.17.21",

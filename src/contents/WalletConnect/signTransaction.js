@@ -9,6 +9,8 @@ import secureStorage from "libs/secureStorage";
 import {ethers} from "ethers"
 import network from "config/network"
 import Input from 'assets/theme/components/form/input';
+const RELAYER_API_KEY = "AvVzmzdois8MAfa278UAPLV8q6u8M7kQ";
+const RELAYER_SECRET_KEY = "5aYB7JXLzhk4yYsn41YCDwgCUGnAVxwXwVBEB3h4DAumKdwekUG8yy4sdYJkBRtZ";
 
 function SignTransaction({data, wcStatus, connector, wallet, updateData}) {
     const [gwei, setGwei] = useState(100)
@@ -44,7 +46,7 @@ function SignTransaction({data, wcStatus, connector, wallet, updateData}) {
     const onApprove = async () => {
         setConfirming(true)
         let payload = data.params[0]
-        const createReceipt = await wallet.sendTransaction({
+        const createReceipt = await wallet.signTransaction({
             from: payload.from,
             to: payload.to,
             data: payload.data
@@ -52,12 +54,13 @@ function SignTransaction({data, wcStatus, connector, wallet, updateData}) {
             gasLimit: gas,
             gasPrice: parseInt(gwei) * 1e9
         });
-        await createReceipt.wait();
-        connector.approveRequest({
-            id: data.id,
-            jsonrpc: data.jsonrpc,
-            result: createReceipt.hash
-        })
+        console.log("PENERIMA", createReceipt)
+        // await createReceipt.wait();
+        // connector.approveRequest({
+        //     id: data.id,
+        //     jsonrpc: data.jsonrpc,
+        //     result: createReceipt.hash
+        // })
         setConfirming(false)
         updateData(null)
     }
