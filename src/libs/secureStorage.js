@@ -16,10 +16,6 @@ const secureStorage = new SecureStorage(localStorage, {
         let $data = CryptoJS.AES.decrypt(data, SECRET_KEY)
         try{
             $data = $data.toString(CryptoJS.enc.Utf8)
-            if(!$data){
-                localStorage.clear()
-                window.location.reload()    
-            }
         }catch(err){
             localStorage.clear()
             window.location.reload()

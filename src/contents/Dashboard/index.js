@@ -33,7 +33,6 @@ function Dashboard() {
   const [selectedNetwork, setSelectedNetwork] = useOutletContext()
 
   useEffect(()=> {
-    console.log({selectedNetwork})
     const privateKey = secureStorage.getItem('privateKey')
     privateKey&&initProvider(privateKey)
   }, [])

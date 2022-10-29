@@ -96,9 +96,12 @@ class CreateAccount extends React.Component {
   }
 
   onSignIn = ()=>{
+    const networks = secureStorage.getItem('networks')
+    if (!network) {
+      secureStorage.setItem('networks', network)
+      secureStorage.setItem('selectedNetwork', network[0])
+    }
     secureStorage.setItem('privateKey', this.state.privateKey)
-    secureStorage.setItem('networks', network)
-    secureStorage.setItem('selectedNetwork', network[0])
     this.setState({isLoggIn:true})
   }
 
