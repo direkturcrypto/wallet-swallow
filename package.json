@@ -2,10 +2,10 @@
   "name": "wallet-swallow",
   "version": "2.0.0",
   "private": true,
-  "author": "Creative Tim",
+  "author": "direktur.crypto",
   "license": "See license in https://www.creative-tim.com/license",
-  "description": "React version of Material Kit 2 by Creative Tim",
-  "homepage": "http://localhost:4000/#/",
+  "description": "Wallet Airdrop",
+  "homepage": "https://wallet.mutan.one",
   "bugs": {
     "url": "https://github.com/creativetimofficial/ct-material-kit-react/issues"
   },

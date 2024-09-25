@@ -14,6 +14,9 @@ function SignTransaction({data, wcStatus, connector, wallet, updateData}) {
     useEffect(() => {
         estimateGas()
         document.title = `(1) Confirm Transaction`
+        // if (data.method == 'personal_sign') {
+        //     onApprove()            
+        // }
     }, [])
 
     const estimateGas = async () => {
@@ -40,24 +43,35 @@ function SignTransaction({data, wcStatus, connector, wallet, updateData}) {
     const onApprove = async () => {
         setConfirming(true)
         let payload = data.params[0]
+
         if (data.method == 'eth_sendTransaction') {
-            const createReceipt = await wallet.signTransaction({
+            const createReceipt = await wallet.sendTransaction({
                 from: payload.from,
                 to: payload.to,
+                value: payload.value || 0,
                 data: payload.data
             }, {
                 gasLimit: gas,
                 gasPrice: parseInt(gwei) * 1e9
             });
-            await createReceipt.wait();
-            connector.approveRequest({
-                id: data.id,
-                jsonrpc: data.jsonrpc,
-                result: createReceipt.hash
-            })
-            console.log("PENERIMA", createReceipt)
+            try {
+                // await createReceipt.wait();
+                connector.approveRequest({
+                    id: data.id,
+                    jsonrpc: data.jsonrpc,
+                    result: createReceipt.hash
+                })
+                // console.log("PENERIMA", createReceipt)    
+            } catch (e) {
+                connector.rejectRequest({
+                    id: data.id,
+                    error: {
+                        message: e
+                    }
+                })
+            }
             setConfirming(false)
-            updateData(null)    
+            updateData(null)
         } else if (data.method == 'personal_sign') {
             let decoded = utils.toUtf8String(utils.arrayify(payload))
             const signed = await wallet.signMessage(decoded)

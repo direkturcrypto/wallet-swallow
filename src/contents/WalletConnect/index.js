@@ -66,7 +66,7 @@ function WC() {
                 description: "WalletConnect Developer App",
                 url: "https://walletconnect.org",
                 icons: ["https://walletconnect.org/walletconnect-logo.png"],
-                name: "WalletConnect"          
+                name: "WalletConnect"
             }
         })
 
@@ -81,7 +81,7 @@ function WC() {
             if (wallet) {
                 let account = await wallet.getAddress()
                 connector.approveSession({
-                    accounts: [account],
+                    accounts: [account.toLowerCase()],
                     chainId: selectedNetwork?.chainId
                 })
             }

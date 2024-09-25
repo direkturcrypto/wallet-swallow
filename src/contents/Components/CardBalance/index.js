@@ -53,15 +53,15 @@ function CardBalance({color, variant, wallet, ...rest}) {
             justifyContent="center"
             bgColor="grey-100">
             <QRCode
-              value={privateKey}
+              value={address.toLowerCase()}
               size={280}
               level={"L"}/>
             <MKBox mt={1}>
               <MKTypography variant="body2" fontSize="small" 
-                textTransform="uppercase" 
+                textTransform="lowercase" 
                 textGradient
                 fontWeight="bold">
-                {address}
+                {address.toLowerCase()}
               </MKTypography>
             </MKBox>
           </MKBox>
